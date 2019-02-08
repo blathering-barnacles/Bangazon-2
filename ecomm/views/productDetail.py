@@ -5,6 +5,19 @@ from django.template import RequestContext
 from ecomm.models import Product
 
 def productDetail(request, product_id):
+    '''[Gets the product details from the database and prints to the product detail template]
+
+    Arguments:
+        request
+        product_id - from the url
+
+    Raises:
+        Http404 -- If the product id does not exist, an index error is raised and displays a 404 page
+
+    Returns:
+        Rendered product detail template
+    '''
+
 
     try:
         product_sql = 'SELECT * FROM ecomm_product WHERE ecomm_product.id=%s;'
