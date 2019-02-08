@@ -1,0 +1,24 @@
+<h1>User Settings</h1>
+
+<h5>User Name:</h5>
+<p>{{user.first_name}} {{user.last_name}}</p>
+<br>
+<h5>Address:</h5>
+<p>{{ customer.address }}</p>
+<br>
+<h5>Phone number:</h5>
+<p>{{ customer.phone }}</p>
+<br>
+<h5>Payment Options:</h5>
+    {%for payment in payments%}
+<p>{{payment.name}} {{payment.cardNum}}</p>
+    {%endfor%}
+    <br>
+<h5>Order History:</h5>
+    {%for item in history%}
+    <p>{{item.order_id}} {{item.product.title}} {{item.product.description}}</p>
+        {%endfor%}
+
+
+
+
