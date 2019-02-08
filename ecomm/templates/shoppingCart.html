@@ -1,9 +1,12 @@
 <h1>Shopping Cart</h1>
 
-{% for item in cart_items %}
-<p>{{ item.product.title }}</p>
+{% for customer in customers %}
+<p>{{ customer.address }}</p>
 {% endfor %}
-
-<p>{{ user.email }}</p>
+{% for order in orders %}
+<p>{{ order.id }}</p>
+<p>{{ order.paymentType_id }}</p>
+{% endfor %}
+<!-- <p>{{ user.email }}</p>
 {{ user.id }}
-{{user.first_name}}
+{{user.first_name}} -->
