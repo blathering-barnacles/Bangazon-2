@@ -8,9 +8,9 @@
   </head>
   <body>
     <h1>Bangazon</h1>
-    {% include "navbar.html" %}
+    {% include "ecomm/navbar.html" %}
     {% if user.is_authenticated %}
-    
+
       <h2>Welcome To Bangazon {{ user.username }}!</h2>
       <a href="{% url 'ecomm:logout' %}">Logout</a>
       {% else %}
@@ -20,7 +20,7 @@
       <div>
         <a href="{% url 'ecomm:login' %}">Login</a>
       </div>
-      
+
       <div>
         <a href="{% url 'ecomm:register' %}">Register</a>
       </div>
