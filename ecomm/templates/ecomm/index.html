@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Welcome to Bangazon!</h1>
-    {% include "navbar.html" %}
+    {% include "ecomm/navbar.html" %}
     {% if user.is_authenticated %}
     <h1>Bangazon says... hello {{ user.username }}!</h1>
     <a href="{% url 'ecomm:logout' %}">Logout</a>

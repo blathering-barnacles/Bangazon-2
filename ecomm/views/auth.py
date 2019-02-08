@@ -8,7 +8,7 @@ from ecomm.forms import UserForm, ProductForm
 from ecomm.models import Product
 
 def index(request):
-    template_name = 'index.html'
+    template_name = 'ecomm/index.html'
     return render(request, template_name, {})
 
 # Create your views here.
@@ -95,7 +95,7 @@ def user_logout(request):
 def sell_product(request):
     if request.method == 'GET':
         product_form = ProductForm()
-        template_name = 'product/create.html'
+        template_name = 'ecomm/createProduct.html'
         return render(request, template_name, {'product_form': product_form})
 
     elif request.method == 'POST':
@@ -109,12 +109,12 @@ def sell_product(request):
             quantity = form_data['quantity'],
         )
         p.save()
-        template_name = 'product/success.html'
+        template_name = 'ecomm/successProduct.html'
         return render(request, template_name, {})
 
 def list_products(request):
     all_products = Product.objects.all()
-    template_name = 'product/list.html'
+    template_name = 'ecomm/listProduct.html'
     return render(request, template_name, {'products': all_products})
 
 
