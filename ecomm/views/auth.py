@@ -91,7 +91,7 @@ def user_logout(request):
     # in the URL in redirects?????
     return HttpResponseRedirect('/')
 
-
+@login_required
 def sell_product(request):
     if request.method == 'GET':
         product_form = ProductForm()
