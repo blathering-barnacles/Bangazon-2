@@ -18,23 +18,14 @@ from ..models import Product
     # return HttpResponseRedirect(reverse('ecomm:index'))
 
 def woop(request):
-    # print("woop")
-    # print("REQUEST: ", request)
-    # print("r", request.POST['product'])
 
     productName = request.POST['product']
+    print("typed: ", productName)
+    productFormatted = str("%"+productName+"%")
 
-    product_list = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.title = %s''', [productName])
-    # woop = product_list.title()
-
-
+    product_list = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.title LIKE %s''', [productFormatted])
     print("products: ", product_list)
     context = {'product_list': product_list}
     template_name = 'index.html'
     print("context: ", context.values())
-    # print("SEARCH: ", productSearch)
-    # template_name = 'index.html'
-    # return render(request, template_name, {})
     return render(request, template_name, context)
-
-    # return HttpResponseRedirect(reverse('ecomm:index'))

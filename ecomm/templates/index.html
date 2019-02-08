@@ -18,7 +18,7 @@
     <div><a href="{% url 'ecomm:login' %}">Login</a></div>
     {% endif %}
     {% for product in product_list %}
-    {{ product.title }}
+    <p>{{ product.title|title }},  Price: {{ product.price }}$,  Qty: {{ product.quantity }}</p>
     {% endfor %}
   </body>
 </html>
