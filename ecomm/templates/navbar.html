@@ -3,15 +3,26 @@
 
 <nav>
   <form action="/" method='get'>
-    <input type="submit" value="index">
+    <input type="submit" value="Home">
   </form>
+  {% if request.user.is_authenticated %}
   <form action="/sell" method='get'>
-    <input type="submit" value="sell">
+    <input type="submit" value="Sell A Product">
   </form>
-  <!-- <form action="/ecomm/orders" method='get'>
-    <input type="submit" value="View Orders">
+  {% endif %}
+
+  {% if request.user.is_authenticated %}
+  <form action="" method='get'>
+    <input type="submit" value="Account Settings ">
   </form>
-  <form action="/ecomm/sell" method='get'>
-    <input type="submit" value="Sell">
-  </form> -->
+  {% endif %}
+  {% if request.user.is_authenticated %}
+  <form action="/logout" method='get'>
+    <input type="submit" value="Logout">
+  </form>
+  {% else %}
+    <form action="/login" method='get'>
+      <input type="submit" value="Login">
+    </form>
+  {% endif %}
 </nav>
