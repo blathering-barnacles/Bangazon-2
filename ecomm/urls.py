@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^sell$', views.sell_product, name='sell'),
     url(r'^products$', views.list_products, name='list_products'),
     url(r'^search$', views.search, name='searchIt'),
-    url(r'^shoppingCart$', views.cart_items_list, name='list_cart_items'),
+    # url(r'^shoppingCart/<order_id>$', views.cart_items_list, name='list_cart_items'),
+    path('shoppingCart/<order_id>', views.cart_items_list, name='list_cart_items'),
 ]

@@ -1,12 +1,7 @@
 <h1>Shopping Cart</h1>
 
-{% for customer in customers %}
-<p>{{ customer.address }}</p>
-{% endfor %}
-{% for order in orders %}
-<p>{{ order.id }}</p>
-<p>{{ order.paymentType_id }}</p>
-{% endfor %}
+{{ customers.address }}
+
 <!-- <p>{{ user.email }}</p>
 {{ user.id }}
 {{user.first_name}} -->

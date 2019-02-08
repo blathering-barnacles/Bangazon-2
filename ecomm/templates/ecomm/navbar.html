@@ -29,13 +29,18 @@
     <input type="submit" value="Login">
   </form>
   {% endif %}
-  
+
   <!-- Search Bar -->
   <form action="{% url 'ecomm:searchIt' %}" method='post'>
         {% csrf_token %}
       <input type="text" name="product"/>
       <input type="submit" value="submit"/>
     </form>
+
+
+    <a href="{% url 'ecomm:list_cart_items' request.user.id %}">Shopping Cart</a>
+
+
 
     </nav>
 
