@@ -6,18 +6,8 @@ from django.urls import reverse
 from django.utils import timezone
 from ..models import Product
 
-# def search(request):
-    # print(request.POST['product'])
-    # return print("scoop")
-    # return render(request, 'ecomm/index.html')
-    # template_name = 'index.html'
-    # return HttpResponseRedirect(reverse('ecomm:index'), )
-    # return render(request, template_name, {})
-    # template_name = 'index.html'
-    # return render(request, template_name, {})
-    # return HttpResponseRedirect(reverse('ecomm:index'))
 
-def woop(request):
+def search(request):
 
     productName = request.POST['product']
     print("typed: ", productName)
