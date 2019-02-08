@@ -13,3 +13,4 @@ urlpatterns = [
     url(r'^products$', views.list_products, name='list_products'),
     # path('search/', views.searchProduct, name='search')
     url(r'^search$', views.search, name='searchIt'),
+]
