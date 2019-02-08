@@ -11,7 +11,6 @@ def index(request):
     template_name = 'index.html'
     return render(request, template_name, {})
 
-
 # Create your views here.
 def register(request):
     '''Handles the creation of a new user for authentication
@@ -66,6 +65,8 @@ def login_user(request):
         username=request.POST['username']
         password=request.POST['password']
         authenticated_user = authenticate(username=username, password=password)
+        print(username, password)
+        print("authenticate: ", authenticate(username=username, password=password))
 
         # If authentication was successful, log the user in
         if authenticated_user is not None:

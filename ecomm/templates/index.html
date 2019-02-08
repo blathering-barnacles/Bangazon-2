@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <title>Bangazon</title>
-    
+
   </head>
   <body>
     <h1>Welcome to Bangazon!</h1>
@@ -17,5 +17,8 @@
     <div><a href="{% url 'ecomm:register' %}">Register</a></div>
     <div><a href="{% url 'ecomm:login' %}">Login</a></div>
     {% endif %}
+    {% for product in product_list %}
+    {{ product.title }}
+    {% endfor %}
   </body>
 </html>
