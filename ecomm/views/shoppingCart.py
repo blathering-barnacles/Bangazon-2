@@ -30,13 +30,13 @@ def cart_items_list(request, order_id):
     # cur.execute("SELECT * FROM users WHERE EmployeeNumber=?", ('12345', ))
     # users = cur.fetchall()
 
-    with connection.cursor() as cursor:
-        cart_list = cursor.execute("SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s", (order, ))[0]
-        # cart_list = cursor.fetchall()
-        carts = cart_list.fetchall()
-        print("CART_LIST: ", cart_list)
+    # with connection.cursor() as cursor:
+        # cart_list = cursor.execute("SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s", (order, ))[0]
+        # cursor.fetchall()
+        # cart_list.fetchall()
+        # print("CART_LIST: ", cart_list)
 
-    context = { 'customers': customer, 'cart_list': carts}
+    context = { 'customers': customer}
     # context = { 'cart_items': cartItems }
     # template_name = 'shoppingCart.html'
     print("context: ", context)
