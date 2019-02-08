@@ -1,0 +1,9 @@
+<h1>Shopping Cart</h1>
+
+{% for item in cart_items %}
+<p>{{ item.product.title }}</p>
+{% endfor %}
+
+<p>{{ user.email }}</p>
+{{ user.id }}
+{{user.first_name}}
