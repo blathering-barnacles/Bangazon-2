@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bangazon</title>
+  </head>
+  <body>
+    {% include "ecomm/navbar.html" %}
+    <h1> {{ product.title }}</h1>
+    <ul>
+        <li>${{ product.price }}</li>
+        <li>{{ product.description }}</li>
+        <li>{{ product.quantity}} available</li>
+    </ul>
+    <a href="#"><button type="button">Add to Order</button></a>
+  </body>
+</html>

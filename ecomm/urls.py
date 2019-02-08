@@ -12,4 +12,7 @@ urlpatterns = [
     url(r'^sell$', views.sell_product, name='sell'),
     url(r'^products$', views.list_products, name='list_products'),
     path('userSettings', views.userSettings, name='userSettings'),
+    path('products/<int:product_id>/', views.productDetail, name='productDetail'),
+    # path('search/', views.searchProduct, name='search')
+    url(r'^search$', views.search, name='searchIt'),
 ]

@@ -8,9 +8,8 @@ from ecomm.forms import UserForm, ProductForm
 from ecomm.models import Product
 
 def index(request):
-    template_name = 'index.html'
+    template_name = 'ecomm/index.html'
     return render(request, template_name, {})
-
 
 # Create your views here.
 def register(request):
@@ -45,7 +44,7 @@ def register(request):
 
     elif request.method == 'GET':
         user_form = UserForm()
-        template_name = 'register.html'
+        template_name = 'ecomm/register.html'
         return render(request, template_name, {'user_form': user_form})
 
 
@@ -66,6 +65,8 @@ def login_user(request):
         username=request.POST['username']
         password=request.POST['password']
         authenticated_user = authenticate(username=username, password=password)
+        print(username, password)
+        print("authenticate: ", authenticate(username=username, password=password))
 
         # If authentication was successful, log the user in
         if authenticated_user is not None:
@@ -78,7 +79,7 @@ def login_user(request):
             return HttpResponse("Invalid login details supplied.")
 
 
-    return render(request, 'login.html', {}, context)
+    return render(request, 'ecomm/login.html', {}, context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
@@ -90,11 +91,11 @@ def user_logout(request):
     # in the URL in redirects?????
     return HttpResponseRedirect('/')
 
-
+@login_required
 def sell_product(request):
     if request.method == 'GET':
         product_form = ProductForm()
-        template_name = 'product/create.html'
+        template_name = 'ecomm/createProduct.html'
         return render(request, template_name, {'product_form': product_form})
 
     elif request.method == 'POST':
@@ -108,12 +109,12 @@ def sell_product(request):
             quantity = form_data['quantity'],
         )
         p.save()
-        template_name = 'product/success.html'
+        template_name = 'ecomm/successProduct.html'
         return render(request, template_name, {})
 
 def list_products(request):
     all_products = Product.objects.all()
-    template_name = 'product/list.html'
+    template_name = 'ecomm/listProduct.html'
     return render(request, template_name, {'products': all_products})
 
 
