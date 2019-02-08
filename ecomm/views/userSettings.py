@@ -23,15 +23,15 @@ def userSettings(request):
     ''', [currentUserId])
     history = ProductOrder.objects.raw('''
         SELECT * from ecomm_productorder
+        JOIN ecomm_order
+        ON ecomm_productorder.order_id  = ecomm_order.id
         JOIN ecomm_customer
         ON ecomm_customer.id = ecomm_order.buyer_id
         JOIN auth_user
         ON  auth_user.id = ecomm_customer.user_id
-        JOIN ecomm_order
-        ON ecomm_productorder.order_id  = ecomm_order.buyer_id
         JOIN ecomm_product
         ON ecomm_product.id = ecomm_productorder.product_id
-        WHERE auth_user.id = %s
+        WHERE auth_user.id =%s
     ''', [currentUserId])
     context = {'customer' : customer, 'payments' : payments, 'history' : history}
     return render(request, 'userSettings.html', context)
