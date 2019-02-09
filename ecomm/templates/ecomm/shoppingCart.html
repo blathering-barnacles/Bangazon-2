@@ -1,0 +1,13 @@
+<h1>Shopping Cart</h1>
+{% include "ecomm/navbar.html" %}
+
+
+{% for item in cart_list %}
+<h5>{{ item.product.title|title }}, ${{ item.product.price }}</h5>
+{% endfor %}
+
+
+
+<!-- <p>{{ user.email }}</p>
+{{ user.id }}
+{{user.first_name}} -->

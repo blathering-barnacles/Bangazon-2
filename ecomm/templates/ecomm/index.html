@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Bangazon</h1>
-    {% include "ecomm/navbar.html" orders%}
+    {% include "ecomm/navbar.html" %}
     {% if user.is_authenticated %}
 
       <h2>Welcome To Bangazon {{ user.username }}!</h2>
@@ -30,6 +30,5 @@
     <p>{{ product.title|title }},  Price: ${{ product.price }},  Qty: {{ product.quantity }}</p>
     {% endfor %}
 
-    { orders }
   </body>
 </html>
