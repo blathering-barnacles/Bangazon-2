@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Bangazon</h1>
-    {% include "ecomm/navbar.html" %}
+    {% include "ecomm/navbar.html" with woop=context %}
     {% if user.is_authenticated %}
 
       <h2>Welcome To Bangazon {{ user.username }}!</h2>

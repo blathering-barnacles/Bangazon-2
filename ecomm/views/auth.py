@@ -5,11 +5,15 @@ from django.shortcuts import render
 from django.template import RequestContext
 
 from ecomm.forms import UserForm, ProductForm
-from ecomm.models import Product
+from ecomm.models import Product, ProductType
 
 def index(request):
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
+    # ASK WHY NOT WORK IN LIST
+    cat = (categories)
+    context = { "categories": cat }
     template_name = 'ecomm/index.html'
-    return render(request, template_name, {})
+    return render(request, template_name, context)
 
 # Create your views here.
 def register(request):

@@ -14,4 +14,7 @@ urlpatterns = [
     path('products/<int:product_id>/', views.productDetail, name='productDetail'),
     # path('search/', views.searchProduct, name='search')
     url(r'^search$', views.search, name='searchIt'),
+    url(r'^choose/(?P<category_id>\d+)/$', views.choose, name='chooseIt'),
+    path('userSettings', views.userSettings, name='userSettings'),
+    # url(r'^deleteItem/(?P<item_id>\d+)/$', views.deleteOrderItem, name='deleteOrderItem'),
 ]

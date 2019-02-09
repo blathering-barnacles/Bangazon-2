@@ -14,7 +14,7 @@
   {% endif %}
 <!-- Account Settings Button -->
   {% if request.user.is_authenticated %}
-  <form action="" method='get'>
+  <form action="{% url 'ecomm:userSettings' %}" method='get'>
     <input type="submit" value="Account Settings ">
   </form>
   {% endif %}
@@ -29,7 +29,19 @@
     <input type="submit" value="Login">
   </form>
   {% endif %}
-  
+  <!-- Choose Category -->
+  {% for category in categories %}
+  <form action="{% url 'ecomm:chooseIt' category.id %}" method='post'>
+      {% endfor %}
+        {% csrf_token %}
+      <select name="categoryOption">
+          <option>-------</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.name }}</option>
+          {% endfor %}
+      </select>
+      <input type="submit" value="submit"/>
+    </form>
   <!-- Search Bar -->
   <form action="{% url 'ecomm:searchIt' %}" method='post'>
         {% csrf_token %}
