@@ -14,6 +14,7 @@ urlpatterns = [
     path('products/<int:product_id>/', views.productDetail, name='productDetail'),
     # path('search/', views.searchProduct, name='search')
     url(r'^search$', views.search, name='searchIt'),
-    # url(r'^shoppingCart/<order_id>$', views.cart_items_list, name='list_cart_items'),
-    path('shoppingCart/<user_id>', views.cart_items_list, name='list_cart_items'),
+    url(r'^shoppingCart/(?P<user_id>\d+)/$', views.cart_items_list, name='list_cart_items'),
+    # path('shoppingCart/<user_id>', views.cart_items_list, name='list_cart_items'),
+    url(r'^deleteItem/(?P<item_id>\d+)/$', views.deleteOrderItem, name='deleteOrderItem'),
 ]
