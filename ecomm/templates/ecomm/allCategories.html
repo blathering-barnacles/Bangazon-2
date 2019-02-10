@@ -24,7 +24,7 @@
 
     {% for item in items %}
     {% if category.id == item.productType_id %}
-    <h5>{{ item.title }}</h5>
+    <h5>{{ item.title|title }}</h5>
     <!-- {% include "ecomm/categoryBlock.html"  %} -->
     {% endif %}
     {% endfor %}
