@@ -13,7 +13,7 @@
   </form>
   {% endif %}
 <!-- Account Settings Button -->
-  {% if request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
   <form action="{% url 'ecomm:userSettings' %}" method='get'>
     <input type="submit" value="Account Settings ">
   </form>
@@ -35,7 +35,8 @@
       {% endfor %}
         {% csrf_token %}
       <select name="categoryOption">
-          <option>-------</option>
+          <option value="-------">-------</option>
+          <option value="all">All</option>
           {% for category in categories %}
           <option value="{{ category.id }}">{{ category.name }}</option>
           {% endfor %}

@@ -21,12 +21,43 @@ def search(request):
     return render(request, 'ecomm/index.html', context)
 
 def choose(request, category_id):
-    print("woop")
-    categoryId = request.POST['categoryOption']
-    products = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
-    countedIds = Product.objects.raw('''SELECT count(ep.id) as id FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
-    singleCategory = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat WHERE cat.id = %s''', [categoryId])
-    # template_name = 'index.html'
-    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
-    context = {'products': products, 'currentCategory': singleCategory, 'categories': categories, 'countedIds': countedIds }
-    return render(request, 'ecomm/singleCategory.html', context)
+
+    if request.POST['categoryOption'] == "-------":
+        categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
+        context = {'categories': categories}
+        return render(request, 'ecomm/index.html', context)
+
+    elif request.POST['categoryOption'] == "all":
+        categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
+
+        allItems = Product.objects.raw('''SELECT p.*, ept.* FROM ecomm_product p
+            JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
+            ORDER by ept.name''')
+
+        categoryIdList = []
+
+
+        for category in categories:
+            # this for loop is going inside the list of all the categories, and is taking the id of a single one and executing
+            # an sql query to find the join table where the productType id from product is same as the id of the product Type itself
+            # and where the product type id itself matches with the ones from the category list.
+            categoryId = category.id
+            print("CATEGORY IDS: ", categoryId)
+            countedIds = Product.objects.raw('''SELECT count(p.id) as id, ept.* FROM ecomm_product p
+                JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
+                AND ept.id = %s
+                ORDER by ept.name''', [categoryId])
+            categoryIdList.append(countedIds)
+
+        context = {'categories': categories, 'items': allItems, 'countedIds': categoryIdList}
+        return render(request, 'ecomm/allCategories.html', context)
+    else:
+        print("woop")
+        categoryId = request.POST['categoryOption']
+        products = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
+        countedIds = Product.objects.raw('''SELECT count(ep.id) as id FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
+        singleCategory = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat WHERE cat.id = %s''', [categoryId])
+        # template_name = 'index.html'
+        categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
+        context = {'products': products, 'currentCategory': singleCategory, 'categories': categories, 'countedIds': countedIds }
+        return render(request, 'ecomm/singleCategory.html', context)
