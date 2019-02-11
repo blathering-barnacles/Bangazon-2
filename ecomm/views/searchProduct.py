@@ -9,7 +9,19 @@ from ..models import Product, ProductType
 
 
 def search(request):
+    '''
+    Summary:
+        This method allows the search for any product in the database.
 
+    Author:
+        Alfonso Miranda
+
+    Arguments:
+        request: Contains the value, which is a string, of the product the user is looking for.
+
+    Returns:
+        renders the request, the template and injects the context into the template.
+    '''
     productName = request.POST['product']
     print("typed: ", productName)
     productFormatted = str("%"+productName+"%")

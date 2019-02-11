@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import RequestContext
+from ..models import Customer, Order
 
 from ecomm.forms import UserForm, ProductForm
 from ecomm.models import Product, ProductType
@@ -11,9 +12,15 @@ def index(request):
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     # ASK WHY NOT WORK IN LIST
     cat = (categories)
-    context = { "categories": cat }
+    user = request.user.id
     template_name = 'ecomm/index.html'
-    return render(request, template_name, context)
+    customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
+    print("customer: ", (customer))
+    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user])[0]
+    # return render(request, template_name, {})
+    print("ORDER: ", order)
+    context = { 'customers': customer, 'orders': order, "categories": cat }
+    return render(request, template_name , context)
 
 # Create your views here.
 def register(request):
