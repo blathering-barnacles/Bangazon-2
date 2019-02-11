@@ -1,4 +1,6 @@
+
 <h1>User Settings</h1>
+{% include "ecomm/navbar.html" %}
 
 <h3>User Name:</h3>
 <p>{{user.first_name}} {{user.last_name}}</p>
@@ -18,7 +20,5 @@
     {%for item in history%}
     <p>{{item.order_id}} {{item.product.title}} {{item.product.description}}</p>
         {%endfor%}
-
-<a href="{% url 'ecomm:editEmployee' %}"><button type="button">Edit Account</button></a>
 
 
