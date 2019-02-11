@@ -6,36 +6,36 @@ class Customer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=50)
     phone = models.IntegerField()
-    deletedOn = models.DateField(default=None)
+    deletedOn = models.DateField(default=None, null=True)
 
 class ProductType(models.Model):
     name = models.CharField(max_length=255)
-    deletedOn = models.DateField(default=None)
+    deletedOn = models.DateField(default=None, null=True)
 
 class Product(models.Model):
-    seller = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    seller = models.ForeignKey(Customer,on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
     location = models.CharField(max_length=30)
     description = models.TextField(blank=True, null=True)
     price = models.IntegerField()
     quantity = models.IntegerField()
-    productType = models.ForeignKey(ProductType, on_delete=models.CASCADE)
+    productType = models.ForeignKey(ProductType, on_delete=models.CASCADE, null=True)
     deletedOn = models.DateField(default=None)
 
 class PaymentType(models.Model):
     name = models.CharField(max_length=30)
     cardNum = models.IntegerField()
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     deletedOn = models.DateField(default=None)
 
 class Order(models.Model):
-    buyer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    paymentType = models.ForeignKey(PaymentType, on_delete=models.CASCADE)
+    buyer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+    paymentType = models.ForeignKey(PaymentType, on_delete=models.CASCADE, null=True)
     deletedOn = models.DateField(default=None)
 
 class ProductOrder(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     deletedOn = models.DateField(default=None)
 
 

@@ -1,4 +1,3 @@
-
 <h1>User Settings</h1>
 {% include "ecomm/navbar.html" %}
 
@@ -21,4 +20,5 @@
     <p>{{item.order_id}} {{item.product.title}} {{item.product.description}}</p>
         {%endfor%}
 
+<a href="{% url 'ecomm:editSettingsForm' %}"><button>Update User Settings</button></a>
 
