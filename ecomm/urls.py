@@ -11,7 +11,11 @@ urlpatterns = [
     url(r'^register$', views.register, name='register'),
     url(r'^sell$', views.sell_product, name='sell'),
     url(r'^products$', views.list_products, name='list_products'),
+    path('userSettings', views.userSettings, name='userSettings'),
     path('products/<int:product_id>/', views.productDetail, name='productDetail'),
     # path('search/', views.searchProduct, name='search')
     url(r'^search$', views.search, name='searchIt'),
+    url(r'^shoppingCart/(?P<user_id>\d+)/$', views.cart_items_list, name='list_cart_items'),
+    # path('shoppingCart/<user_id>', views.cart_items_list, name='list_cart_items'),
+    url(r'^deleteItem/(?P<item_id>\d+)/$', views.deleteOrderItem, name='deleteOrderItem'),
 ]

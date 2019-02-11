@@ -1,0 +1,12 @@
+<h1>{{ user.username }}'s Shopping Cart</h1>
+{% include "ecomm/navbar.html" %}
+
+
+{% for item in cart_list %}
+<form action="{% url 'ecomm:deleteOrderItem' item.id %}" method="post">
+{% csrf_token %}
+{% if item.deletedOn is None %}
+<h5>{{ item.product.title|title }}, ${{ item.product.price }} <input type="submit" value="X" /></h5>
+{% endif %}
+</form>
+{% endfor %}
