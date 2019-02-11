@@ -20,10 +20,7 @@ class Product(models.Model):
     price = models.IntegerField()
     quantity = models.IntegerField()
     productType = models.ForeignKey(ProductType, on_delete=models.CASCADE)
-<<<<<<< HEAD
-=======
     dateAdded = models.DateField(default=None)
->>>>>>> d086a4f34c6e7cda65f6d00ae3d6ede5b89ff87c
     deletedOn = models.DateField(default=None, null=True)
 
 class PaymentType(models.Model):
