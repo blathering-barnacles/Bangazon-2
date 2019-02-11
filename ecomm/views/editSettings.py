@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from ..models import Customer, ProductType, Product, ProductOrder, PaymentType, Order
+# from ..forms import UserSettings
 
 @login_required
 def editSettingsForm(request):
@@ -20,6 +21,8 @@ def editSettingsForm(request):
     customer = Customer.objects.raw('''SELECT * FROM ecomm_customer where user_id=%s''',[currentUserId])[0]
     context = {'customer' : customer}
     return render(request, 'ecomm/editSettings.html', context)
+    # userSettings = UserSettings()
+    # return render(request, 'ecomm/editSettings.html', {"form": userSettings.as_p()})
 
 @login_required
 def editSettings(request):
