@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import User
-from ..models import Customer, ProductType, Product, ProductOrder, PaymentType, Order
+from ..models import Customer, ProductType, Product, ProductOrder, PaymentType, Order, ProductType
 
 @login_required
 def userSettings(request):
@@ -21,6 +21,7 @@ def userSettings(request):
     #     '''
     # user = User.objects.raw(sql, [pk])[0]
     currentUserId = request.user.id
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     customer = Customer.objects.raw('''SELECT * FROM ecomm_customer where user_id=%s''',[currentUserId])[0]
     payments = PaymentType.objects.raw('''
         SELECT * from ecomm_paymentType
@@ -42,6 +43,11 @@ def userSettings(request):
         ON ecomm_product.id = ecomm_productorder.product_id
         WHERE auth_user.id =%s
     ''', [currentUserId])
+<<<<<<< HEAD
     context = {'customer' : customer, 'payments' : payments, 'history' : history}
     return render(request, 'ecomm/userSettings.html', context)
+=======
+    context = {'customer' : customer, 'payments' : payments, 'history' : history, 'categories': categories}
+    return render(request, 'userSettings.html', context)
+>>>>>>> master
     # order = ProductOrder.objects.raw('SELECT * from ecomm_order')

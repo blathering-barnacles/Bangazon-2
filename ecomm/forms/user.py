@@ -1,9 +1,9 @@
 from django import forms
 from django.forms.widgets import SelectDateWidget
 from django.contrib.auth.models import User
-from ..models import
+from ..models import Customer
 
-class DogForm(forms.Form):
+class userForm(forms.Form):
   dog_name = forms.CharField(label='Dog name', max_length=20)
   breed = forms.CharField(label='Breed', max_length=20)
   chip_num = forms.IntegerField(label='Chip num')
