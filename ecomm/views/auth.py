@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import RequestContext
-from ..models import Customer, Order
+from ..models import Customer, Order, User
+from django.db import connection
 
 from ecomm.forms import UserForm, ProductForm
 from ecomm.models import Product, ProductType
@@ -46,6 +47,11 @@ def register(request):
 
             # Update our variable to tell the template registration was successful.
             registered = True
+
+            # Creates a new customer row using the id of the user that was just created for the customer primary key and the user foreign key
+            customer_sql = ''' INSERT INTO ecomm_customer VALUES (%s, %s, %s, %s, %s)'''
+            with connection.cursor() as cursor:
+                cursor.execute(customer_sql, [user.id, '', '', '', user.id])
 
         return login_user(request)
 
