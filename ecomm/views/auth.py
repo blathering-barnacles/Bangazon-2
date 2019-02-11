@@ -53,6 +53,11 @@ def register(request):
             # Update our variable to tell the template registration was successful.
             registered = True
 
+            # Creates a new customer row using the id of the user that was just created for the customer primary key and the user foreign key
+            customer_sql = ''' INSERT INTO ecomm_customer VALUES (%s, %s, %s, %s, %s)'''
+            with connection.cursor() as cursor:
+                cursor.execute(customer_sql, [user.id, '', '', '', user.id])
+
         return login_user(request)
 
     elif request.method == 'GET':
