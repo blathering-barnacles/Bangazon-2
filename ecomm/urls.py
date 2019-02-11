@@ -14,9 +14,9 @@ urlpatterns = [
     path('products/<int:product_id>/', views.productDetail, name='productDetail'),
     path('userSettings', views.userSettings, name='userSettings'),
     path('products/<int:product_id>/', views.productDetail, name='productDetail'),
-    # path('search/', views.searchProduct, name='search')
     url(r'^search$', views.search, name='searchIt'),
+    url(r'^categories/(?P<category_id>\d+)/$', views.choose, name='chooseIt'),
+    path('userSettings', views.userSettings, name='userSettings'),
     url(r'^shoppingCart/(?P<user_id>\d+)/$', views.cart_items_list, name='list_cart_items'),
-    # path('shoppingCart/<user_id>', views.cart_items_list, name='list_cart_items'),
     url(r'^deleteItem/(?P<item_id>\d+)/$', views.deleteOrderItem, name='deleteOrderItem'),
 ]
