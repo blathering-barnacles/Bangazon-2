@@ -42,13 +42,13 @@ def choose(request, category_id):
             elif request.POST['categoryOption'] == "all":
                 categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
 
-                allItems = Product.objects.raw('''SELECT p.*, ept.* FROM ecomm_product p
-                    JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
-                    AND p.dateAdded >= %s
-                    ORDER by ept.name''', [formattedDate])
+                # allItems = Product.objects.raw('''SELECT p.*, ept.* FROM ecomm_product p
+                #     JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
+                #     AND p.dateAdded >= %s
+                #     ORDER by ept.name''', [formattedDate])
 
-                # itemsList = allItems[0:3]
 
+                itemList = []
                 categoryIdList = []
 
 
@@ -64,7 +64,15 @@ def choose(request, category_id):
                         ORDER by ept.name''', [categoryId])
                     categoryIdList.append(countedIds)
 
-                context = {'categories': categories, 'items': allItems, 'countedIds': categoryIdList}
+                    allItems = Product.objects.raw('''SELECT p.*, ept.* FROM ecomm_product p
+                    JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
+                    AND p.dateAdded >= %s
+                    AND ept.id = %s
+                    LIMIT 3''', [formattedDate, categoryId])
+                    itemList.append(allItems)
+
+                context = {'categories': categories, 'items': itemList, 'countedIds': categoryIdList}
+                # context = {'categories': categories, 'items': allItems, 'countedIds': categoryIdList}
                 return render(request, 'ecomm/allCategories.html', context)
 
 
@@ -80,6 +88,7 @@ def choose(request, category_id):
                 context = {'products': products, 'currentCategory': singleCategory, 'categories': categories, 'countedIds': countedIds }
                 return render(request, 'ecomm/singleCategory.html', context)
 
+    # WHEN THEY CLICK ON A CATEGORY NAME A TAG
     else:
         categoryId = category_id
         products = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])

@@ -19,15 +19,22 @@
 
     <h1><a href="{% url 'ecomm:chooseIt' category.id %}">{{ category.name }}, amount of products: {{ productType.id }}</a></h1>
         {% endif %}
+        <!-- this endfor is for productType -->
         {% endfor %}
+        <!-- this endfor is for list -->
         {% endfor %}
 
-    {% for item in items %}
+    {% for itemList in items %}
+    {% for item in itemList %}
     {% if category.id == item.productType_id %}
     <h5>{{ item.title|title }}</h5>
     <!-- {% include "ecomm/categoryBlock.html"  %} -->
     {% endif %}
+    <!-- this endfor is for the item -->
     {% endfor %}
+    <!-- this endfor is for the itemlist -->
+    {% endfor %}
+    <!-- this endfor is for the  category -->
     {% endfor %}
 
 </body>
