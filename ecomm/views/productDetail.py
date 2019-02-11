@@ -6,8 +6,10 @@ from django.db import connection
 from ecomm.models import Product, ProductOrder
 
 
-def productDetail(request, pk):
-    '''[Gets the product details from the database and prints to the product detail template]
+def productDetail(request, product_id):
+    '''[Gets the product details from the database and prints to the product detail template. For quantity available, gets the total times the product has appeared on a completed order and subtracts that from the original quantity available.]
+
+    Author: Jessica Barnett
 
     Arguments:
         request
@@ -24,7 +26,7 @@ def productDetail(request, pk):
     try:
         product_sql = 'SELECT * FROM ecomm_product WHERE ecomm_product.id=%s;'
 
-        product = Product.objects.raw(product_sql, [pk])[0]
+        product = Product.objects.raw(product_sql, [product_id])[0]
 
         purchased_sql = ''' SELECT ecomm_product.id, COUNT(*) as total
             FROM ecomm_product
@@ -34,7 +36,7 @@ def productDetail(request, pk):
             ON ecomm_productorder.order_id= ecomm_order.id
             WHERE ecomm_productorder.product_id =%s AND ecomm_order.paymentType_id IS NOT NULL;'''
 
-        purchased_quantity = Product.objects.raw(purchased_sql, [pk])[0]
+        purchased_quantity = Product.objects.raw(purchased_sql, [product_id])[0]
 
         inventory = product.quantity - purchased_quantity.total
         context = {"product": product, "inventory": inventory}
