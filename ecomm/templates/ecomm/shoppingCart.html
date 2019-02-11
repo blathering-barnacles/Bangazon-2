@@ -10,3 +10,7 @@
 {% endif %}
 </form>
 {% endfor %}
+
+<form action="{% url 'ecomm:deleteOrder' item.id %}">
+<input type="submit" name="deleteOrder">
+</form>
