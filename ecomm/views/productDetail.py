@@ -36,10 +36,6 @@ def productDetail(request, pk):
 
         purchased_quantity = Product.objects.raw(purchased_sql, [pk])[0]
 
-        # original_qnty_sql = ''' SELECT ecomm_product.quantity
-        #                         FROM ecomm_product
-        #                         WHERE ecomm_product.id = %s;'''
-
         inventory = product.quantity - purchased_quantity.total
         context = {"product": product, "inventory": inventory}
         return render(request, 'ecomm/productDetail.html', context)
