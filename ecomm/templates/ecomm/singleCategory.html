@@ -1,0 +1,13 @@
+{% for category in currentCategory %}
+{% for ids in countedIds %}
+<h1>{{ category.name }}, Total Products: {{ ids.id }}</h1>
+{% endfor %}
+{% endfor %}
+
+<!-- I DONT KNOW WHAT WOOP DOES, I JUST KNOW IT HAS TO BE THERE SO IT CAN PASS THE CONTEXT FROM INDEX INTO NAV -->
+{% include "ecomm/navbar.html" with woop=context %}
+
+
+{% for product in products %}
+<p>{{ product.title|title }}, Price: ${{ product.price }}, Qty: {{ product.quantity }}</p>
+{% endfor %}

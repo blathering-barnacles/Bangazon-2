@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Bangazon</h1>
-    {% include "ecomm/navbar.html" %}
+    {% include "ecomm/navbar.html" with woop=context %}
     {% if user.is_authenticated %}
 
       <h2>Welcome To Bangazon {{ user.username }}!</h2>
@@ -26,9 +26,6 @@
       </div>
     </ul>
     {% endif %}
-    {% for product in product_list %}
-    <p>{{ product.title|title }},  Price: ${{ product.price }},  Qty: {{ product.quantity }}</p>
-    {% endfor %}
 
   </body>
 </html>
