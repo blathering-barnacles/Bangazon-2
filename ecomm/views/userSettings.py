@@ -44,5 +44,5 @@ def userSettings(request):
         WHERE auth_user.id =%s
     ''', [currentUserId])
     context = {'customer' : customer, 'payments' : payments, 'history' : history, 'categories': categories}
-    return render(request, 'userSettings.html', context)
+    return render(request, 'ecomm/userSettings.html', context)
     # order = ProductOrder.objects.raw('SELECT * from ecomm_order')
