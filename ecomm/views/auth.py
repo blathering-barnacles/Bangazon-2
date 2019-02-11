@@ -105,33 +105,6 @@ def user_logout(request):
     return HttpResponseRedirect('/')
 
 
-@login_required
-def sell_product(request):
-    if request.method == 'GET':
-        product_form = ProductForm()
-        template_name = 'ecomm/createProduct.html'
-        return render(request, template_name, {'product_form': product_form})
-
-    if request.method == 'POST':
-        # form_data = request.POST
-        seller_id = request.user.id
-        location = request.POST["location"]
-        title = request.POST["title"] 
-        productType_id = request.POST["productType"]
-        description = request.POST["description"] 
-        price = request.POST["price"] 
-        quantity = request.POST["quantity"]
-        dateAdded = datetime.now()
-        formattedDate = str(dateAdded)[0:10]
-        
-
-
-        with connection.cursor() as cursor:
-          cursor.execute("INSERT into ecomm_product VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", [None, title, location, description, price, quantity, formattedDate, None, productType_id, seller_id])
-          return HttpResponseRedirect(reverse('ecomm:index'))
-
-
-
 
 
 def list_products(request):
