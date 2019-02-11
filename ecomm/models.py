@@ -11,6 +11,9 @@ class Customer(models.Model):
 class ProductType(models.Model):
     name = models.CharField(max_length=255)
     deletedOn = models.DateField(default=None, null=True)
+    
+    def __str__(self):
+      return f'{self.name}'
 
 class Product(models.Model):
     seller = models.ForeignKey(Customer,on_delete=models.CASCADE, null=True)
