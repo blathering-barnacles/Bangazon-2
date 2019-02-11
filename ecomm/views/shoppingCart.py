@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from ..models import Order, ProductOrder, Customer, ProductType
-# from django.contrib.auth.models import User
 
 @login_required
 def cart_items_list(request, user_id):

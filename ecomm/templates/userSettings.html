@@ -1,0 +1,24 @@
+
+<h1>User Settings</h1>
+{% include "ecomm/navbar.html" %}
+
+<h3>User Name:</h3>
+<p>{{user.first_name}} {{user.last_name}}</p>
+<br>
+<h3>Address:</h3>
+<p>{{ customer.address }}</p>
+<br>
+<h3>Phone number:</h3>
+<p>{{ customer.phone }}</p>
+<br>
+<h3>Payment Options:</h3>
+    {%for payment in payments%}
+<p>{{payment.name}} {{payment.cardNum}}</p>
+    {%endfor%}
+    <br>
+<h3>Order History:</h3>
+    {%for item in history%}
+    <p>{{item.order_id}} {{item.product.title}} {{item.product.description}}</p>
+        {%endfor%}
+
+
