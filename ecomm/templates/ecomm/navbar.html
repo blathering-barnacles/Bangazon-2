@@ -15,7 +15,7 @@
 <!-- Account Settings Button -->
   {% if request.user.is_authenticated %}
   <form action="" method='get'>
-    <input type="submit" value="Account Settings ">
+    <a href="{% url 'ecomm:userSettings' %}"><button type="button">Account Settings</button></a>
   </form>
   {% endif %}
 <!-- Logout button -->
