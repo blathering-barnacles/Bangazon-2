@@ -7,6 +7,15 @@ from ..models import Customer, ProductType, Product, ProductOrder, PaymentType, 
 
 @login_required
 def userSettings(request):
+    """R Lancaster[Method requests information from many tables in the DB and sends the context over to the User Settings template.  All information is related to the user ID of the logged in user.]
+
+    Arguments:
+        request
+
+    Returns:
+        render sends context from various tables to the user Settings template view.
+    """
+
     # sql = '''
     #     SELECT * FROM ecomm_user WHERE id=%s
     #     '''
@@ -35,5 +44,5 @@ def userSettings(request):
         WHERE auth_user.id =%s
     ''', [currentUserId])
     context = {'customer' : customer, 'payments' : payments, 'history' : history, 'categories': categories}
-    return render(request, 'userSettings.html', context)
+    return render(request, 'ecomm/userSettings.html', context)
     # order = ProductOrder.objects.raw('SELECT * from ecomm_order')
