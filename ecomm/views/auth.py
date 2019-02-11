@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.urls import reverse
 from ..models import Customer, Order
+from datetime import datetime, timedelta
 
 from ecomm.forms import UserForm, ProductForm
 
@@ -120,11 +121,13 @@ def sell_product(request):
         description = request.POST["description"] 
         price = request.POST["price"] 
         quantity = request.POST["quantity"]
+        dateAdded = datetime.now()
+        formattedDate = str(dateAdded)[0:10]
         
 
 
         with connection.cursor() as cursor:
-          cursor.execute("INSERT into ecomm_product VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)", [None, title, location, description, price, quantity, None, productType_id, seller_id])
+          cursor.execute("INSERT into ecomm_product VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", [None, title, location, description, price, quantity, formattedDate, None, productType_id, seller_id])
           return HttpResponseRedirect(reverse('ecomm:index'))
 
 
