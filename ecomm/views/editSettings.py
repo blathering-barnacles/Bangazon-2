@@ -7,14 +7,31 @@ from ..models import Customer, ProductType, Product, ProductOrder, PaymentType, 
 
 @login_required
 def editSettingsForm(request):
+    """R Lancaster[Information from DB gets passed to the edit Settings Form]
+
+    Arguments:
+        request
+
+    Returns:
+        render sends info from the Customer table to the edit Settings form page.
+    """
+
     currentUserId = request.user.id
     customer = Customer.objects.raw('''SELECT * FROM ecomm_customer where user_id=%s''',[currentUserId])[0]
-    print(customer.phone)
     context = {'customer' : customer}
     return render(request, 'ecomm/editSettings.html', context)
 
 @login_required
 def editSettings(request):
+    """R Lancaster[This method is executed when the user saves the updated user settings on the user settings update form page]
+
+    Arguments:
+        request
+
+    Returns:
+        User is redirected to main User Settings page.
+    """
+
     currentUserId = request.user.id
     custSettings = Customer.objects.raw('''SELECT * FROM ecomm_customer where user_id=%s''',[currentUserId])[0]
     uSettings = User.objects.raw('''SELECT * FROM auth_user where id=%s''',[currentUserId])[0]
