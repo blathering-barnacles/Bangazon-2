@@ -16,10 +16,10 @@ def editSettingsForm(request):
     Returns:
         render sends info from the Customer table to the edit Settings form page.
     """
-
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     currentUserId = request.user.id
     customer = Customer.objects.raw('''SELECT * FROM ecomm_customer where user_id=%s''',[currentUserId])[0]
-    context = {'customer' : customer}
+    context = {'customer' : customer, 'categories' : categories}
     return render(request, 'ecomm/editSettings.html', context)
     # userSettings = UserSettings()
     # return render(request, 'ecomm/editSettings.html', {"form": userSettings.as_p()})
