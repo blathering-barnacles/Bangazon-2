@@ -1,11 +1,15 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import RequestContext
+from django.db import connection
 
-from ecomm.models import Product
+from ecomm.models import Product, ProductOrder
+
 
 def productDetail(request, product_id):
-    '''[Gets the product details from the database and prints to the product detail template]
+    '''[Gets the product details from the database and prints to the product detail template. For quantity available, gets the total times the product has appeared on a completed order and subtracts that from the original quantity available.]
+
+    Author: Jessica Barnett
 
     Arguments:
         request
@@ -24,7 +28,18 @@ def productDetail(request, product_id):
 
         product = Product.objects.raw(product_sql, [product_id])[0]
 
-        context = {"product": product}
+        purchased_sql = ''' SELECT ecomm_product.id, COUNT(*) as total
+            FROM ecomm_product
+            JOIN ecomm_productorder
+            ON ecomm_productorder.product_id= ecomm_product.id
+            JOIN ecomm_order
+            ON ecomm_productorder.order_id= ecomm_order.id
+            WHERE ecomm_productorder.product_id =%s AND ecomm_order.paymentType_id IS NOT NULL;'''
+
+        purchased_quantity = Product.objects.raw(purchased_sql, [product_id])[0]
+
+        inventory = product.quantity - purchased_quantity.total
+        context = {"product": product, "inventory": inventory}
         return render(request, 'ecomm/productDetail.html', context)
 
     except IndexError:
