@@ -10,7 +10,7 @@
     {% include "ecomm/navbar.html" %}
 
 
-    <form action="{% url 'ecomm:sell' %}" method="post">
+    <form action="{% url 'ecomm:sell' %}" method="POST">
       {% csrf_token %}
       {{ product_form.as_p }}
       <input type="submit" value="Sell It" />

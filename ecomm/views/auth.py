@@ -3,9 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import RequestContext
+from django.urls import reverse
 
 from ecomm.forms import UserForm, ProductForm
 from ecomm.models import Product
+
+from django.db import connection
 
 def index(request):
     template_name = 'ecomm/index.html'
@@ -91,6 +94,7 @@ def user_logout(request):
     # in the URL in redirects?????
     return HttpResponseRedirect('/')
 
+
 @login_required
 def sell_product(request):
     if request.method == 'GET':
@@ -98,27 +102,28 @@ def sell_product(request):
         template_name = 'ecomm/createProduct.html'
         return render(request, template_name, {'product_form': product_form})
 
-    elif request.method == 'POST':
-        form_data = request.POST
+    if request.method == 'POST':
+        # form_data = request.POST
+        seller_id = request.user.id
+        location = request.POST["location"]
+        title = request.POST["title"] 
+        productType_id = request.POST["productType"]
+        description = request.POST["description"] 
+        price = request.POST["price"] 
+        quantity = request.POST["quantity"]
+        
 
-        p = Product(
-            seller = request.user,
-            title = form_data['title'],
-            description = form_data['description'],
-            price = form_data['price'],
-            quantity = form_data['quantity'],
-        )
-        p.save()
-        template_name = 'ecomm/successProduct.html'
-        return render(request, template_name, {})
+
+        with connection.cursor() as cursor:
+          cursor.execute("INSERT into ecomm_product VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)", [None, title, location, description, price, quantity, None, productType_id, seller_id])
+          return HttpResponseRedirect(reverse('ecomm:index'))
+
+
+
+
 
 def list_products(request):
     all_products = Product.objects.all()
     template_name = 'ecomm/listProduct.html'
     return render(request, template_name, {'products': all_products})
-
-
-
-
-
 
