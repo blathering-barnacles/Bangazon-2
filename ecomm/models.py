@@ -13,7 +13,7 @@ class ProductType(models.Model):
     deletedOn = models.DateField(default=None, null=True)
 
 class Product(models.Model):
-    seller = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    seller = models.ForeignKey(Customer,on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255)
     location = models.CharField(max_length=30)
     description = models.TextField(blank=True, null=True)
