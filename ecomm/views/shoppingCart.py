@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from ..models import Order, ProductOrder, Customer
+from ..models import Order, ProductOrder, Customer, ProductType
 # from django.contrib.auth.models import User
 
 @login_required
@@ -28,6 +28,7 @@ def cart_items_list(request, user_id):
 
 
     user = request.user.id
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
     order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])[0]
     orderId = user_id
@@ -41,7 +42,7 @@ def cart_items_list(request, user_id):
         # cart_list.fetchall()
         # print("CART_LIST: ", cart_list)
 
-    context = { 'customers': customer, 'cart_list': cartItems }
+    context = { 'customers': customer, 'cart_list': cartItems, 'categories': categories }
     print("context: ", context)
 
     return render(request, 'ecomm/shoppingCart.html' , context)
