@@ -43,11 +43,6 @@ def userSettings(request):
         ON ecomm_product.id = ecomm_productorder.product_id
         WHERE auth_user.id =%s
     ''', [currentUserId])
-<<<<<<< HEAD
-    context = {'customer' : customer, 'payments' : payments, 'history' : history}
-    return render(request, 'ecomm/userSettings.html', context)
-=======
     context = {'customer' : customer, 'payments' : payments, 'history' : history, 'categories': categories}
     return render(request, 'userSettings.html', context)
->>>>>>> master
     # order = ProductOrder.objects.raw('SELECT * from ecomm_order')
