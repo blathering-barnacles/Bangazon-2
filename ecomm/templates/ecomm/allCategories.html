@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>All Categories</h1>
+    {% include "ecomm/navbar.html" with woop=context %}
+
+
+<!-- this is a fking mess but it works..   -->
+    {% for category in categories %}
+        {% for list in countedIds %}
+        {% for productType in list %}
+        {% if category.name == productType.name %}
+
+    <h1><a href="{% url 'ecomm:chooseIt' category.id %}">{{ category.name }}, amount of products: {{ productType.id }}</a></h1>
+        {% endif %}
+        <!-- this endfor is for productType -->
+        {% endfor %}
+        <!-- this endfor is for list -->
+        {% endfor %}
+
+    {% for itemList in items %}
+    {% for item in itemList %}
+    {% if category.id == item.productType_id %}
+    <h5>{{ item.title|title }}</h5>
+    <!-- {% include "ecomm/categoryBlock.html"  %} -->
+    {% endif %}
+    <!-- this endfor is for the item -->
+    {% endfor %}
+    <!-- this endfor is for the itemlist -->
+    {% endfor %}
+    <!-- this endfor is for the  category -->
+    {% endfor %}
+
+</body>
+</html>
+
+
