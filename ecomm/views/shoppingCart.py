@@ -31,7 +31,8 @@ def cart_items_list(request, user_id):
     customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
     orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])
     orderId = user_id
-    # cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
+    cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
+
     cartItemList = []
     for order in orders:
         orderId = order.id
@@ -95,15 +96,29 @@ def deleteOrder(request, order_id):
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
     orderId = order_id
-    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [orderId])[0]
+    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [orderId])
     items = ProductOrder.objects.raw('''SELECT po.* FROM ecomm_productorder po WHERE po.order_id = %s''', [orderId])
+
+    # userId = request.user.id
+    # orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [userId])
+
+    ordersList = []
+
+    for order in orders:
+        print("ORDER ID: ", order.id)
+        ordersList.append(ordersList)
+
+
 
     for item in items:
         item.deletedOn = formattedDate
         item.save()
 
-    order.deletedOn = formattedDate
-    order.save()
+    orders.deletedOn = formattedDate
+    orders.save()
+
+    # orders.deletedOn = formattedDate
+    # orders.save()
     print("WOOP")
     print("ORDER ID: ", order_id)
 
