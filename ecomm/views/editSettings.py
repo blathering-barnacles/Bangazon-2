@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from ..models import Customer, ProductType, Product, ProductOrder, PaymentType, Order
 from django.utils import timezone
 from datetime import datetime, timedelta
+from ecomm.forms import AddPayment
+from django.db import connection
 # from ..forms import UserSettings
 
 @login_required
@@ -90,4 +92,19 @@ def deletePayment(request, payment_id):
         ''', [payment_id])[0]
     payment.deletedOn = formattedDate
     payment.save()
+    return HttpResponseRedirect(reverse('ecomm:editPaymentsForm'))
+
+def addPaymentsForm(request):
+    form = AddPayment()
+    return render(request, 'ecomm/addPayment.html', {"form" : form})
+
+def addPayment(request):
+    currentUserId = request.user.id
+    name = request.POST['name']
+    cardNum = request.POST['cardNum']
+
+    # Creates a new customer row using the id of the user that was just created for the customer primary key and the user foreign key
+    payment_sql = ''' INSERT INTO ecomm_paymenttype VALUES (%s, %s, %s, %s, %s)'''
+    with connection.cursor() as cursor:
+        cursor.execute(payment_sql, [None, name, cardNum, '', currentUserId])
     return HttpResponseRedirect(reverse('ecomm:editPaymentsForm'))

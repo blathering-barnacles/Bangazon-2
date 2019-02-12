@@ -16,6 +16,7 @@ urlpatterns = [
     path('userSettings', views.userSettings, name='userSettings'),
     path('editPaymentsForm', views.editPaymentsForm, name='editPaymentsForm'),
     path('addPaymentsForm', views.addPaymentsForm, name='addPaymentsForm'),
+    path('addPayment', views.addPayment, name='addPayment'),
     path('deletePayment/<int:payment_id>/', views.deletePayment, name='deletePayment'),
     path('editSettingsForm', views.editSettingsForm, name='editSettingsForm'),
     path('products/<int:product_id>/', views.productDetail, name='productDetail'),
