@@ -27,7 +27,7 @@ def add_product_to_order(request, product_id):
             new_order_id = cursor.lastrowid
             cursor.execute("INSERT into ecomm_productorder VALUES (%s,%s,%s,%s)", [None, None, new_order_id, product_id])
 
-    return HttpResponseRedirect(reverse('ecomm:index'))
+    return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(buyer_id,)))
 
 
 
