@@ -16,10 +16,16 @@
     {%endfor%}
     <a href="{% url 'ecomm:editPaymentsForm' %}"><button>Add/Delete Payment Options</button></a>
     <br>
-<h3>Order History:</h3>
+<h3><a href="{% url 'ecomm:orderHistory' user.id %}">Order History:</a></h3>
     {%for item in history%}
+    {% if item.paymentType_id is not None %}
     <p>Order #{{item.order_id}}<br>Item: {{item.product.title}}<br>Description: {{item.product.description}}</p>
+    {% else %}
+    <p>You have not purchased any items yet.</p>
+
+        {% endif %}
         {%endfor%}
 
 <a href="{% url 'ecomm:editSettingsForm' %}"><button>Update User Settings</button></a>
+
 

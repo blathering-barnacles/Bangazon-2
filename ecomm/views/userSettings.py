@@ -43,7 +43,7 @@ def userSettings(request):
         JOIN ecomm_product
         ON ecomm_product.id = ecomm_productorder.product_id
         WHERE auth_user.id =%s
-        AND ecomm_productOrder.deletedOn = ''
+        AND ecomm_productOrder.deletedOn is null
     ''', [currentUserId])
     context = {'customer' : customer, 'payments' : payments, 'history' : history, 'categories': categories}
     return render(request, 'ecomm/userSettings.html', context)
