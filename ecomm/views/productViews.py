@@ -48,3 +48,14 @@ def sell_product(request):
         return HttpResponseRedirect(reverse('ecomm:productDetail', args=(newProductId,)))
 
 
+
+@login_required
+def my_products(request):
+    
+
+    customer = request.user.customer
+    sql = """
+
+
+
+
