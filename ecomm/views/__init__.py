@@ -7,3 +7,5 @@ from .shoppingCart import cart_items_list, deleteOrderItem, deleteOrder
 from .sellProduct import sell_product
 from .editSettings import editSettings
 from .editSettings import editSettingsForm
+from .editSettings import editPaymentsForm
+from .editSettings import deletePayment
