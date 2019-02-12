@@ -34,7 +34,7 @@ class PaymentType(models.Model):
 
 class Order(models.Model):
     buyer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    paymentType = models.ForeignKey(PaymentType, on_delete=models.CASCADE)
+    paymentType = models.ForeignKey(PaymentType, default=None, null=True, on_delete=models.CASCADE)
     deletedOn = models.DateField(default=None, null=True)
 
 class ProductOrder(models.Model):
