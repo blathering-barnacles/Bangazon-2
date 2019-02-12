@@ -12,6 +12,7 @@
         <li>{{ product.description }}</li>
         <li>{{ inventory }} available</li>
     </ul>
-    <a href="#"><button type="button">Add to Order</button></a>
+<!-- add logic here for out of stock -->
+    <a href="{% url 'ecomm:productOrder' product_id=product.id %}">Add to Order</a>
   </body>
 </html>
