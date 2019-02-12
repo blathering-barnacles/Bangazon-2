@@ -11,7 +11,7 @@ class Customer(models.Model):
 class ProductType(models.Model):
     name = models.CharField(max_length=255)
     deletedOn = models.DateField(default=None, null=True)
-    
+    # converts category choices to readable names
     def __str__(self):
       return f'{self.name}'
 
