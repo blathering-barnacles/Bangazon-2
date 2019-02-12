@@ -3,12 +3,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Bangazon</title>
+    <h1>Bangazon</h1>
   </head>
   <body>
-    <h1>Sell Product</h1>
-    {% include "ecomm/navbar.html" %}
 
+    {% include "ecomm/navbar.html" %}
+    
+    <h1>Sell Product</h1>
 
     <form action="{% url 'ecomm:sell' %}" method="POST">
       {% csrf_token %}
