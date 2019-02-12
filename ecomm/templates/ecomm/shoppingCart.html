@@ -2,14 +2,22 @@
 {% include "ecomm/navbar.html" with woop=context %}
 
 {% for order in orders %}
+{% if order is None %}
+<h1>There are currently no items in your shopping cart</h1>
+{% endif %}
 {% if order.deletedOn is None %}
-{% for item in cart_list %}
+<h5>Order #{{ order.id }}</h5>
+{% for items in cart_list %}
+{% for item in items %}
+{% if item.order_id == order.id %}
 <form action="{% url 'ecomm:deleteOrderItem' item.id %}" method="post">
     {% csrf_token %}
     {% if item.deletedOn is None %}
     <h5>{{ item.product.title|title }}, ${{ item.product.price }} <input type="submit" value="X" /></h5>
     {% endif %}
 </form>
+{% endif %}
+{% endfor %}
 {% endfor %}
 
 {% for order in orders %}

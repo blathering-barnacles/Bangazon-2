@@ -29,19 +29,24 @@ def cart_items_list(request, user_id):
     user = request.user.id
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
-    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])
+    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])
     orderId = user_id
+    # cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
+    cartItemList = []
+    for order in orders:
+        orderId = order.id
+        cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
+        print("ITEMS IN CART: ", cartItems)
+        cartItemList.append(cartItems)
 
-    cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
-
-    print("ITEMS: ", cartItems)
+    print("ITEMS: ", cartItemList)
     # with connection.cursor() as cursor:
     #     cart_list = cursor.execute("SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s", (orderId, ))
     #     woop = cursor.fetchall()
         # cart_list.fetchall()
         # print("CART_LIST: ", cart_list)
 
-    context = { 'customers': customer, 'cart_list': cartItems, 'categories': categories, 'orders': order }
+    context = { 'customers': customer, 'cart_list': cartItemList, 'categories': categories, 'orders': orders }
     print("context: ", context)
 
     return render(request, 'ecomm/shoppingCart.html' , context)
