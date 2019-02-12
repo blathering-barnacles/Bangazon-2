@@ -95,15 +95,32 @@ def deletePayment(request, payment_id):
     return HttpResponseRedirect(reverse('ecomm:editPaymentsForm'))
 
 def addPaymentsForm(request):
+    """R Lancaster[directs the user to the Add Payment template]
+
+    Arguments:
+        request
+
+    Returns:
+        render
+    """
+
     form = AddPayment()
     return render(request, 'ecomm/addPayment.html', {"form" : form})
 
 def addPayment(request):
+    """R Lancaster[method takes values entered on Add Payment form and inserts a row into the PaymentType table]
+
+    Arguments:
+        request
+
+    Returns:
+        redirects user to the Edit Payments Form page
+    """
+
     currentUserId = request.user.id
     name = request.POST['name']
     cardNum = request.POST['cardNum']
-
-    # Creates a new customer row using the id of the user that was just created for the customer primary key and the user foreign key
+    # Creates a new payment type row
     payment_sql = ''' INSERT INTO ecomm_paymenttype VALUES (%s, %s, %s, %s, %s)'''
     with connection.cursor() as cursor:
         cursor.execute(payment_sql, [None, name, cardNum, '', currentUserId])
