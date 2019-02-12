@@ -20,12 +20,13 @@ from django.db import connection
 @login_required
 def sell_product(request):
     if request.method == 'GET':
+        # stores the sell form into a variable
         product_form = ProductForm()
         template_name = 'ecomm/createProduct.html'
         return render(request, template_name, {'product_form': product_form})
 
     if request.method == 'POST':
-        # form_data = request.POST
+        # stores user form entries into variables
         seller_id = request.user.id
         location = request.POST["location"]
         title = request.POST["title"] 
@@ -37,9 +38,11 @@ def sell_product(request):
         formattedDate = str(dateAdded)[0:10]
         
 
-
+        # used to inject the raw SQL
         with connection.cursor() as cursor:
+          # raw SQL - Variable names reference the database table columns
           cursor.execute("INSERT into ecomm_product VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", [None, title, location, description, price, quantity, formattedDate, None, productType_id, seller_id])
+          # after clicking the submit button, user is redirected to the products view
           return HttpResponseRedirect(reverse('ecomm:list_products'))
 
 
