@@ -19,7 +19,6 @@ urlpatterns = [
     path('addPayment', views.addPayment, name='addPayment'),
     path('deletePayment/<int:payment_id>/', views.deletePayment, name='deletePayment'),
     path('editSettingsForm', views.editSettingsForm, name='editSettingsForm'),
-    path('products/<int:product_id>/', views.productDetail, name='productDetail'),
     url(r'^search$', views.search, name='searchIt'),
     url(r'^categories/(?P<category_id>\d+)/$', views.choose, name='chooseIt'),
     path('userSettings', views.userSettings, name='userSettings'),
