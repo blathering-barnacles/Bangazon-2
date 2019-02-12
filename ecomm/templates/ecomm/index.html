@@ -26,6 +26,8 @@
       </div>
     </ul>
     {% endif %}
-
+    {% for product in product_list %}
+    <p>{{ product.title|title }},  Price: ${{ product.price }},  Qty: {{ product.quantity }}</p>
+    {% endfor %}
   </body>
 </html>

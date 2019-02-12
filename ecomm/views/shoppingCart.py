@@ -29,7 +29,7 @@ def cart_items_list(request, user_id):
     user = request.user.id
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
-    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])[0]
+    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])
     orderId = user_id
 
     cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
@@ -41,7 +41,7 @@ def cart_items_list(request, user_id):
         # cart_list.fetchall()
         # print("CART_LIST: ", cart_list)
 
-    context = { 'customers': customer, 'cart_list': cartItems, 'categories': categories }
+    context = { 'customers': customer, 'cart_list': cartItems, 'categories': categories, 'orders': order }
     print("context: ", context)
 
     return render(request, 'ecomm/shoppingCart.html' , context)
@@ -71,3 +71,35 @@ def deleteOrderItem(request, item_id):
     item.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(userId,)))
+
+def deleteOrder(request, order_id):
+    '''
+    Summary:
+        This method updates the Order row that matches the order_id, and ProductOrder rows that match the order_id.
+        after that it proceeds to add todays date on their respective deletedOn columns.
+
+    Author:
+        Alfonso Miranda
+
+    Arguments:
+        request: Contains the user, and other elements.
+
+    Returns:
+        After updating the deletedOn column in specific row it redirects to the shopping cart of that specific user.
+    '''
+    todaysDate = datetime.now()
+    formattedDate = str(todaysDate)[0:10]
+    orderId = order_id
+    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [orderId])[0]
+    items = ProductOrder.objects.raw('''SELECT po.* FROM ecomm_productorder po WHERE po.order_id = %s''', [orderId])
+
+    for item in items:
+        item.deletedOn = formattedDate
+        item.save()
+
+    order.deletedOn = formattedDate
+    order.save()
+    print("WOOP")
+    print("ORDER ID: ", order_id)
+
+    return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(order_id,)))

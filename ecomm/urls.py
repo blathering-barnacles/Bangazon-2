@@ -22,6 +22,7 @@ urlpatterns = [
     path('userSettings', views.userSettings, name='userSettings'),
     url(r'^shoppingCart/(?P<user_id>\d+)/$', views.cart_items_list, name='list_cart_items'),
     url(r'^deleteItem/(?P<item_id>\d+)/$', views.deleteOrderItem, name='deleteOrderItem'),
+    url(r'^deleteOrder/(?P<order_id>\d+)/$', views.deleteOrder, name='deleteOrder'),
     url(r'^orderHistory/(?P<user_id>\d+)/$', views.viewOrder, name='orderHistory'),
     url(r'^orderDetail/(?P<order_id>\d+)/$', views.viewOrderDetail, name='orderDetail'),
 ]
