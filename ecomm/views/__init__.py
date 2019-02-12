@@ -8,4 +8,5 @@ from .sellProduct import sell_product
 from .editSettings import editSettings
 from .editSettings import editSettingsForm
 from .editSettings import editPaymentsForm
+from .editSettings import addPaymentsForm
 from .editSettings import deletePayment
