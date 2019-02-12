@@ -50,11 +50,10 @@ def sell_product(request):
 
 
 @login_required
-def my_products(request):
+def userProducts(request):
     
+    return render(request, "ecomm/userProducts.html")
 
-    customer = request.user.customer
-    sql = """
 
 
 
