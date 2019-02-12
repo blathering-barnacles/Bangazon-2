@@ -30,17 +30,14 @@ def cart_items_list(request, user_id):
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
     orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])
-    orderId = user_id
-    cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
 
     cartItemList = []
     for order in orders:
         orderId = order.id
         cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
-        print("ITEMS IN CART: ", cartItems)
         cartItemList.append(cartItems)
 
-    print("ITEMS: ", cartItemList)
+    # print("ITEMS: ", cartItemList)
     # with connection.cursor() as cursor:
     #     cart_list = cursor.execute("SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s", (orderId, ))
     #     woop = cursor.fetchall()
@@ -48,7 +45,6 @@ def cart_items_list(request, user_id):
         # print("CART_LIST: ", cart_list)
 
     context = { 'customers': customer, 'cart_list': cartItemList, 'categories': categories, 'orders': orders }
-    print("context: ", context)
 
     return render(request, 'ecomm/shoppingCart.html' , context)
 
@@ -69,10 +65,8 @@ def deleteOrderItem(request, item_id):
 
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
-    print("DATE: ", formattedDate)
     userId = request.user.id
     item = ProductOrder.objects.raw('''SELECT ecomm_productorder.* FROM ecomm_productorder WHERE ecomm_productorder.id = %s''', [item_id])[0]
-    print("ITEM: ", item)
     item.deletedOn = formattedDate
     item.save()
 
@@ -93,33 +87,28 @@ def deleteOrder(request, order_id):
     Returns:
         After updating the deletedOn column in specific row it redirects to the shopping cart of that specific user.
     '''
+
+    print("ID: ", order_id)
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
-    orderId = order_id
-    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [orderId])
+    orderId = int(order_id)
     items = ProductOrder.objects.raw('''SELECT po.* FROM ecomm_productorder po WHERE po.order_id = %s''', [orderId])
 
-    # userId = request.user.id
-    # orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [userId])
+    userId = request.user.id
+    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [userId])
 
-    ordersList = []
 
     for order in orders:
-        print("ORDER ID: ", order.id)
-        ordersList.append(ordersList)
+        if  order.id == orderId:
+            print("ORDER where ID matches: ", order)
 
+            print("ORDER: ", order)
+            order.deletedOn = formattedDate
+            order.save()
 
 
     for item in items:
         item.deletedOn = formattedDate
         item.save()
 
-    orders.deletedOn = formattedDate
-    orders.save()
-
-    # orders.deletedOn = formattedDate
-    # orders.save()
-    print("WOOP")
-    print("ORDER ID: ", order_id)
-
-    return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(order_id,)))
+    return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(1,)))

@@ -3,7 +3,7 @@
 
 
 {% for order in orders %}
-{% if order.deletedOn is None %}
+{% if order.paymentType_id is None %}
 <h5>Order #{{ order.id }}</h5>
 {% for items in cart_list %}
 {% for item in items %}
@@ -33,7 +33,8 @@
 
 <!-- if order.deletedOn is not None then display this -->
 {% else %}
-<h1>There is no items in your shopping cart!</h1>
+<h1>There are items in your shopping cart!</h1>
+
 
 <!-- this ends the if that checks if order.deletedOn is None -->
 {% endif %}
@@ -41,5 +42,4 @@
 
 <!-- this endfor is for order in orders -->
 {% endfor %}
-
 

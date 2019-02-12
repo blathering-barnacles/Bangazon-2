@@ -5,7 +5,7 @@
 
 <h3>Items:</h3>
 {% for item in orderItems %}
-{% if item.deletedOn is not None %}
+{% if item.deletedOn is None %}
 <p>{{ item.product.title }},  for ${{ item.product.price}}</p>
 
 {% endif %}

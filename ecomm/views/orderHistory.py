@@ -59,7 +59,7 @@ def viewOrderDetail(request, order_id):
         FROM ecomm_productorder po, ecomm_order eo
         WHERE eo.id = po.order_id
         AND eo.id = %s
-        AND po.deletedOn <> None''',[orderId])
+        AND po.deletedOn is null''',[orderId])
 
     # print("COUNTED ITEMS: ", countedItems)
 
