@@ -14,7 +14,7 @@
     {%for payment in payments%}
 <p>{{payment.name}} {{payment.cardNum}}</p>
     {%endfor%}
-    <a href="{% url 'ecomm:editPaymentsForm' %}"><button>Update Payment Options</button></a>
+    <a href="{% url 'ecomm:editPaymentsForm' %}"><button>Add/Delete Payment Options</button></a>
     <br>
 <h3>Order History:</h3>
     {%for item in history%}
