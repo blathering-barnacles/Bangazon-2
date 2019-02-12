@@ -1,0 +1,15 @@
+
+<h1>ORDER #{{ orderId }} DETAILS</h1>
+
+{% include "ecomm/navbar.html" %}
+
+<h3>Items:</h3>
+{% for item in orderItems %}
+{% if item.deletedOn is None %}
+<p>{{ item.product.title }},  for ${{ item.product.price}}</p>
+
+{% endif %}
+{% endfor %}
+
+
+<a href="{% url 'ecomm:orderHistory' user.id %}"><button>Back to Orders</button></a>
