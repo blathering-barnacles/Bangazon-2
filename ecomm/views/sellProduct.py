@@ -44,10 +44,7 @@ def sell_product(request):
         cursor.execute("INSERT into ecomm_product VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", [None, title, location, description, price, quantity, formattedDate, None, productType_id, seller_id])
 
         newProductId = cursor.lastrowid
-        print("HEEEEEEEEY", newProductId)
-        # after clicking the submit button, user is redirected to the products view
-        # product = Product.objects.raw('SELECT * FROM ecomm_product WHERE id = %s', [product_id])
-        # template_name = 'productDetail.html'
+     
         return HttpResponseRedirect(reverse('ecomm:productDetail', args=(newProductId,)))
 
 
