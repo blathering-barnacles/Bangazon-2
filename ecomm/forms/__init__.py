@@ -1,1 +1,1 @@
-from .forms import UserForm, ProductForm
+from .forms import UserForm, ProductForm, AddPayment

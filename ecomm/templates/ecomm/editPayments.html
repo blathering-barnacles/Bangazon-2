@@ -7,3 +7,5 @@
         {% csrf_token %}
         <input type="submit" value="X" /></form></p>
 {%endfor%}
+<br>
+<a href="{% url 'ecomm:addPaymentsForm' %}"><button>Add New Payment Option</button></a>
