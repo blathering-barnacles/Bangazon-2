@@ -48,6 +48,15 @@ def editSettings(request):
     return HttpResponseRedirect(reverse('ecomm:userSettings'))
 
 def editPaymentsForm(request):
+    """R Lancaster[method populates Edit Payment Methods form with existing payment options]
+
+    Arguments:
+        request
+
+    Returns:
+        render, context of existing payment options
+    """
+
     currentUserId = request.user.id
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     payments = PaymentType.objects.raw('''
@@ -63,6 +72,16 @@ def editPaymentsForm(request):
     return render(request, 'ecomm/editPayments.html', context)
 
 def deletePayment(request, payment_id):
+    """R Lancaster[method adds a deletedOn date to the PaymentType table, therefore "soft deleting" the payment option]
+
+    Arguments:
+        request
+        payment_id
+
+    Returns:
+        redirects back to the Edit Payments form
+    """
+
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
     payment = PaymentType.objects.raw('''
