@@ -12,3 +12,4 @@ from .editSettings import editPaymentsForm
 from .editSettings import addPaymentsForm
 from .editSettings import addPayment
 from .editSettings import deletePayment
+from .productOrder import add_product_to_order
