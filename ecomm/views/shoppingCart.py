@@ -152,10 +152,29 @@ def completeOrder(request, order_id):
     return render(request, 'ecomm/addPaymentMethod.html', context)
 
 def finishIt(request, order_id):
+    """R Lancaster[method takes the order being completed as well as the payment ID selected from the addPaymentMethod template and saves the payment method to the order within the order table.]
+
+    Arguments:
+        request
+        order_id
+
+    Returns:
+        Redirects the user to a plain thankYou template.
+    """
+
     finish = Order.objects.raw('''SELECT * from ecomm_order where id=%s''', [order_id])[0]
     finish.paymentType_id = request.POST['finishIt']
     finish.save()
     return HttpResponseRedirect(reverse('ecomm:thankYou'))
 
 def thankYou(request):
+    """R Lancaster[directs the user over to the thankYou template]
+
+    Arguments:
+        request
+
+    Returns:
+        Render the thankYou template.
+    """
+
     return render(request, 'ecomm/thankYou.html')
