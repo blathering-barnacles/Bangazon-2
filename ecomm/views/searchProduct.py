@@ -30,7 +30,7 @@ def search(request):
     print("products: ", product_list)
     context = {'product_list': product_list, 'categories': categories}
     print("context: ", context.values())
-    return render(request, 'ecomm/index.html', context)
+    return render(request, 'ecomm/searchView.html', context)
 
 def choose(request, category_id):
     '''
@@ -55,7 +55,7 @@ def choose(request, category_id):
 
     '''
 
-    extraDays = timedelta(days=1)
+    extraDays = timedelta(days=5)
     todaysDate = datetime.now()
     print("TODAY: ", todaysDate)
     formattedDate = str(todaysDate-extraDays)[0:10]
@@ -95,6 +95,7 @@ def choose(request, category_id):
                 JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
                 AND p.dateAdded >= %s
                 AND ept.id = %s
+                ORDER BY p.dateAdded DESC
                 LIMIT 3''', [formattedDate, categoryId])
                 itemList.append(allItems)
 

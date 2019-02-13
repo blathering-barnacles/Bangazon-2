@@ -26,8 +26,13 @@
       </div>
     </ul>
     {% endif %}
-    {% for product in product_list %}
-    <p>{{ product.title|title }},  Price: ${{ product.price }},  Qty: {{ product.quantity }}</p>
+    <h3>Latest 20 Items:</h3>
+    {% for product in products %}
+    <ul>
+        <li>
+    <h5><a href="{% url 'ecomm:productDetail' product.id %}">{{ product.title|title }},  Price: ${{ product.price }}, Date Added: {{ product.dateAdded }}</a></h5>
+        </li>
+    </ul>
     {% endfor %}
   </body>
 </html>

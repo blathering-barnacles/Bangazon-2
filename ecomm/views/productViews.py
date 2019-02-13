@@ -36,14 +36,14 @@ def sell_product(request):
       # stores user form entries into variables
       seller_id = request.user.id
       location = request.POST["location"]
-      title = request.POST["title"] 
+      title = request.POST["title"]
       productType_id = request.POST["productType"]
-      description = request.POST["description"] 
-      price = request.POST["price"] 
+      description = request.POST["description"]
+      price = request.POST["price"]
       quantity = request.POST["quantity"]
       dateAdded = datetime.now()
       formattedDate = str(dateAdded)[0:10]
-        
+
 
     # used to inject the raw SQL
   with connection.cursor() as cursor:
@@ -51,7 +51,7 @@ def sell_product(request):
     cursor.execute("INSERT into ecomm_product VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", [None, title, location, description, price, quantity, formattedDate, None, productType_id, seller_id])
 
     newProductId = cursor.lastrowid
-  
+
     return HttpResponseRedirect(reverse('ecomm:productDetail', args=(newProductId,)))
 
 
@@ -79,7 +79,9 @@ def userProducts(request):
       AND ecomm_product.deletedOn IS Null
     ''', [currentUser])
 
-    context = {'selling': selling}
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
+
+    context = {'selling': selling, 'categories': categories}
     return render(request, "ecomm/userProducts.html", context)
 
 @login_required
@@ -96,11 +98,11 @@ def removeProduct(request, product_id):
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
     product = Product.objects.raw('''
-      SELECT * FROM ecomm_product 
+      SELECT * FROM ecomm_product
       WHERE ecomm_product.id = %s
       ''',
       [product_id])[0]
-    
+
     product.deletedOn = formattedDate
     product.save()
 
