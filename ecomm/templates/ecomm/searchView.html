@@ -1,0 +1,7 @@
+
+<h1>Search Results</h1>
+{% include "ecomm/navbar.html" %}
+
+{% for product in product_list %}
+<p>{{ product.title|title }},  Price: ${{ product.price }},  Qty: {{ product.quantity }}</p>
+{% endfor %}

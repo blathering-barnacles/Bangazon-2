@@ -30,7 +30,7 @@ def search(request):
     print("products: ", product_list)
     context = {'product_list': product_list, 'categories': categories}
     print("context: ", context.values())
-    return render(request, 'ecomm/index.html', context)
+    return render(request, 'ecomm/searchView.html', context)
 
 def choose(request, category_id):
     '''
