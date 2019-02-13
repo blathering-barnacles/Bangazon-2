@@ -36,7 +36,9 @@
 
 <!-- this endfor is for the items in cart_list -->
 {% endfor %}
-
+<form action="{% url 'ecomm:completeOrder' order.id %}">
+    <input type="submit" name="completeOrder" value="Complete this Order">
+</form>
 <!-- THIS IS A SEPARATE FOR LOOP THAT ITS JOB IS TO RENDER A CANCEL ORDER BUTTON PER ORDER -->
 
 <form action="{% url 'ecomm:deleteOrder' order.id %}">
