@@ -1,34 +1,96 @@
-# Welcome to Bangazon
+# BangazonAPI
 
-This web application is the source code for the Bangazon e-commerce web site. It is powered by Python and Django.
+This is an API for Bangazon INC. This API will allow user to GET/POST/PUT and (sometimes) DELETE items from the Bangazon Database. Before you can utilize the database, there are a few things you need to make sure you have installed.
 
-Students, you are inheriting a basic implementation that provides the following features:
+# Installing Core Technologies
 
-1. User registration 
-1. User login 
-1. User logout 
-1. Adding a product 
-1. Listing products
+## 1. SQLite
 
-Please consult the backlog of issues and work with your product owner to implement the top priority tickets for your sprints.
+### For OSX Users
 
-## To begin work
+```
+brew install sqlite
+```
 
-1. The team lead should clone this repository, then push it to your team's Github repo.
-1. Alert your manager when this is complete and all backlog issues will be imported into your project.
-1. Each teammate should clone the repository.
-1. In the `djangazon` directory that gets created, run the migrations with `python manage.py migrate`
+### For Windows Users
 
-## Helpful Resources
+Visit the [SQLite downloads](https://www.sqlite.org/download.html) and download the 64-bit DLL (x64) for SQLite version, unzip and install it.
 
-### Django Models and Migrations
+## 2. SQL Browser
 
-Using the requirements above create a [model](https://docs.djangoproject.com/en/1.10/topics/db/models/) for each resource, and use [migrations](https://docs.djangoproject.com/en/1.10/topics/migrations/) to ensure your database structure is up to date.
+The [DB browser for SQLite](http://sqlitebrowser.org/) will let you view, query and manage your databases for this project.
 
-### Templates
+## 3. Visual Studio Code
 
-[Django template language](https://docs.djangoproject.com/en/1.10/ref/templates/language/)
+[Visual Studio Code](https://code.visualstudio.com/download) is Microsoft's cross-platform editor that you can use to view Python and Django code.
 
-### Form Helpers
+# Setting up environment and installing dependencies
 
-Django has many built-in [helper tags and filters](https://docs.djangoproject.com/en/1.10/ref/templates/builtins/) when building the site templates. We strongly recommend reading this documentation while building your templates.
+## 1. Set up your virtual environment
+
+Within the terminal, navigate to the location where you'd like to create the new environment and Bangazon project. Create a folder called BangazonProject and navigate within the new folder. Then, enter this text to create the new environment:
+```
+virtualenv ENV
+```
+Then activate your environment:
+```
+source ENV/bin/activate
+```
+Note that you can type "deactivate" to end the new environment at any time.
+
+## 2. Install Django
+
+Within your new BangazonProject folder, download the Django code by typing:
+```
+pip install django
+```
+
+## 3. Download the Bangazon project
+
+Within your new BangazonProject project folder, download the source code by typing:
+```
+git clone https://github.com/blathering-barnacles/Bangazon-2.git
+```
+
+## 4. Starting the project server
+
+After downloading the Banagzon project, you should have a new folder within the BangazonProject folder that you created. The new folder will also be called Bangazon.  Navigate within this folder.  Start the server by typing:
+```
+python manage.py runserver
+```
+
+## 5. Navigate to the Bangazon workforce webpage
+
+Within your web browser, navigate to http://localhost:8000/
+From here, you should see the main links for the Bangazon workforce application.
+
+
+# Creating the Bangazon DB
+
+While inside the BangazonProject/Bangazon folder, enter this command:
+```
+python manage.py makemigrations ecomm
+```
+Then enter
+```
+python manage.py migrate
+```
+You now have a database named sqlite3.sql within your existing folder.  Use the DB Browser for SQLite to open the new database if desired.
+
+## Entity Relationship Diagram
+![BANGAZON ERD](/Bangazon_ERD.png "Bangazon ERD")
+
+
+This will run all of the Unit Testing files created within the BangazonProject/Bangazon/bangazon_1/workforce/tests folder.
+
+
+
+## Bangazon was created by the Blathering Barnacles - Cohort 28:
+
+[Jessica Barnett](https://github.com/jessicabarnett8219)
+
+[Alfonzo Miranda](https://github.com/Kazathur92)
+
+[Andy Herring](https://github.com/Andrew-Herring)
+
+[Richard Lancaster](https://github.com/rjlancaster)
