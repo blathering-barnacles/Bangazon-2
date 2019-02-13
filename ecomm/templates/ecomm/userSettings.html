@@ -4,43 +4,55 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Bangazon</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 
 <body>
-
-
-    <h1>User Settings</h1>
     {% include "ecomm/navbar.html" %}
-
-    <h3>User Name:</h3>
-    <p>{{user.first_name}} {{user.last_name}}</p>
-    <br>
-    <h3>Address:</h3>
-    <p>{{ customer.address }}</p>
-    <br>
-    <h3>Phone number:</h3>
-    <p>{{ customer.phone }}</p>
-    <br>
-    <h3>Payment Options:</h3>
-    {%for payment in payments%}
-    <p>{{payment.name}} {{payment.cardNum}}</p>
-    {%endfor%}
-    <a href="{% url 'ecomm:editPaymentsForm' %}"><button>Add/Delete Payment Options</button></a>
-    <br>
-    <h3><a href="{% url 'ecomm:orderHistory' user.id %}">Order History:</a></h3>
-    {%for item in history%}
-    {% if item.paymentType_id is not None %}
-    <p>Order #{{item.order_id}}<br>Item: {{item.product.title}}<br>Description: {{item.product.description}}</p>
-    {% else %}
-    <p>You have not purchased any items yet.</p>
-
-    {% endif %}
-    {%endfor%}
-
-    <a href="{% url 'ecomm:editSettingsForm' %}"><button>Update User Settings</button></a>
+    <div class="container">
+        <h1 class="mt-3">User Settings: {{ user.username }}</h1>
+        <ul class="list-group mt-4">
+            <li class="list-group-item">
+                <i class="fas fa-user-circle fa-fw"></i><span class="font-weight-bold"> Name</span> {{user.first_name}}
+                {{user.last_name}}</li>
+            <li class="list-group-item">
+                <i class="fas fa-home fa-fw"></i><span class="font-weight-bold"> Address</span> {{ customer.address }}
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-phone fa-fw"></i><span class="font-weight-bold"> Phone Number</span>
+                {{ customer.phone }}</li>
+            <li class="list-group-item">
+                <i class="fas fa-credit-card fa-fw"></i><span class="font-weight-bold"> Payment Options</span>
+                <ul class="mt-2">
+                    {%for payment in payments%}
+                    <li>{{payment.name}} {{payment.cardNum}}</li>
+                    {%endfor%}
+                </ul>
+                <a href="{% url 'ecomm:editPaymentsForm' %}"><button class="btn btn-primary btn-sm mt-3">Add/Delete
+                        Payment Options</button></a>
+            </li>
+            <li class="list-group-item">
+                <i class="fas fa-history fa-fw"></i><span class="font-weight-bold"> Order History</span>
+                <ul>
+                    {%for item in history%}
+                    <li>
+                    {% if item.paymentType_id is not None %}
+                    <p><span class="font-weight-bold">Order #{{item.order_id}}</span><br>Item: {{item.product.title}}<br>Description:
+                        {{item.product.description}}</p>
+                    </li>
+                    {% else %}
+                    <li>You have not purchased any items yet.</li>
+                    {% endif %}
+                    {%endfor%}
+                </ul>
+                <a href="{% url 'ecomm:orderHistory' user.id %}"><button class="btn btn-primary btn-sm">More Order History Info</button></a>
+            </li>
+        </ul>
+        <a href="{% url 'ecomm:editSettingsForm' %}"><button class="btn btn-primary mt-3"><i class="fas fa-user-edit"></i> Edit User Settings</button></a>
+    </div>
 </body>
 
 </html>
