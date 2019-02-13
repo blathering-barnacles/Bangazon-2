@@ -29,7 +29,7 @@ def cart_items_list(request, user_id):
     user = request.user.id
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
-    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])
+    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s AND o.paymentType_id is null AND o.deletedOn is null''', [user_id])
 
     cartItemList = []
     for order in orders:
@@ -45,7 +45,7 @@ def cart_items_list(request, user_id):
         # print("CART_LIST: ", cart_list)
 
     context = { 'customers': customer, 'cart_list': cartItemList, 'categories': categories, 'orders': orders }
-
+    print("CONTEXT: ", context)
     return render(request, 'ecomm/shoppingCart.html' , context)
 
 def deleteOrderItem(request, item_id):
@@ -66,9 +66,27 @@ def deleteOrderItem(request, item_id):
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
     userId = request.user.id
-    item = ProductOrder.objects.raw('''SELECT ecomm_productorder.* FROM ecomm_productorder WHERE ecomm_productorder.id = %s''', [item_id])[0]
-    item.deletedOn = formattedDate
-    item.save()
+    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s AND o.paymentType_id is null AND o.deletedOn is null''', [userId])
+    one_orderId = order[0].__dict__['id']
+    product = ProductOrder.objects.raw('''SELECT ecomm_productorder.* FROM ecomm_productorder WHERE ecomm_productorder.id = %s''', [item_id])[0]
+    items = ProductOrder.objects.raw(''' SELECT ecomm_productorder.* FROM ecomm_productorder JOIN ecomm_order ON ecomm_productorder.order_id = ecomm_order.id
+    AND ecomm_productorder.order_id = %s
+    AND ecomm_productorder.deletedOn is null''', [one_orderId])
+    itemList = []
+    for item in items:
+        itemList.append(item)
+    for item in itemList:
+
+        if len(itemList) <= 1:
+            print("ITS less or equal to 1")
+            order[0].deletedOn = formattedDate
+            item.deletedOn = formattedDate
+            item.save()
+            order[0].save()
+        else:
+            print("ITs MORE than 1")
+            product.deletedOn = formattedDate
+            product.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(userId,)))
 
@@ -88,7 +106,6 @@ def deleteOrder(request, order_id):
         After updating the deletedOn column in specific row it redirects to the shopping cart of that specific user.
     '''
 
-    print("ID: ", order_id)
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
     orderId = int(order_id)
@@ -100,9 +117,6 @@ def deleteOrder(request, order_id):
 
     for order in orders:
         if  order.id == orderId:
-            print("ORDER where ID matches: ", order)
-
-            print("ORDER: ", order)
             order.deletedOn = formattedDate
             order.save()
 
