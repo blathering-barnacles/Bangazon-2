@@ -36,7 +36,7 @@ def viewOrder(request, user_id):
             FROM ecomm_productorder po, ecomm_order eo
             WHERE eo.id = po.order_id
             AND eo.id = %s
-            AND po.deletedOn <> ""''', [orderId])
+            AND po.deletedOn is null''', [orderId])
 
     print("COUNTED ITEMS: ", countedItems)
 
