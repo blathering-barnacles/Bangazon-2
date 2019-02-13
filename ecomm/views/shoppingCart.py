@@ -45,7 +45,7 @@ def cart_items_list(request, user_id):
         # print("CART_LIST: ", cart_list)
 
     context = { 'customers': customer, 'cart_list': cartItemList, 'categories': categories, 'orders': orders }
-
+    print("CONTEXT: ", context)
     return render(request, 'ecomm/shoppingCart.html' , context)
 
 def deleteOrderItem(request, item_id):

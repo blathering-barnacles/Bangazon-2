@@ -1,6 +1,7 @@
 <h1>{{ user.username }}'s Shopping Cart</h1>
 {% include "ecomm/navbar.html" with woop=context %}
 
+{% if orders %}
 
 {% for order in orders %}
 
@@ -44,4 +45,6 @@
 <!-- this endfor is for order in orders -->
 {% endfor %}
 
-
+{% else %}
+<h1>There are no items in your shopping cart</h1>
+{% endif %}
