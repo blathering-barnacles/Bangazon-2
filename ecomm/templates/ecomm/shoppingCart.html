@@ -3,7 +3,7 @@
 
 
 {% for order in orders %}
-{% if order.paymentType_id is None %}
+{% if order.paymentType_id is None and order.deletedOn is None %}
 <h5>Order #{{ order.id }}</h5>
 {% for items in cart_list %}
 {% for item in items %}

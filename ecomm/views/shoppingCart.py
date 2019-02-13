@@ -66,9 +66,30 @@ def deleteOrderItem(request, item_id):
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
     userId = request.user.id
-    item = ProductOrder.objects.raw('''SELECT ecomm_productorder.* FROM ecomm_productorder WHERE ecomm_productorder.id = %s''', [item_id])[0]
-    item.deletedOn = formattedDate
-    item.save()
+    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [userId])
+    one_orderId = order[0].__dict__['id']
+    product = ProductOrder.objects.raw('''SELECT ecomm_productorder.* FROM ecomm_productorder WHERE ecomm_productorder.id = %s''', [item_id])[0]
+    items = ProductOrder.objects.raw(''' SELECT ecomm_productorder.* FROM ecomm_productorder JOIN ecomm_order ON ecomm_productorder.order_id = ecomm_order.id
+    AND ecomm_productorder.order_id = %s
+    AND ecomm_productorder.deletedOn is null''', [one_orderId])
+
+    itemList = []
+    print("Items: ", items)
+    for item in items:
+        print("item: ", item)
+        itemList.append(item)
+
+    print("LIST: ", itemList)
+    if len(itemList) <= 1:
+        print("ITS less or equal to 2")
+        order[0].deletedOn = formattedDate
+        item.deletedOn = formattedDate
+        item.save()
+        order[0].save()
+    else:
+        print("ITs MORE than 1")
+        product.deletedOn = formattedDate
+        product.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(userId,)))
 
