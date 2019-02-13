@@ -10,7 +10,7 @@
             {% endif %}</li>
         <li class="nav-item">
             {% if request.user.is_authenticated %}
-            <a class="nav-link" href="{% url 'ecomm:index' %}">Your Items for Sale</a>
+            <a class="nav-link" href="{% url 'ecomm:userProducts' %}">Your Items for Sale</a>
             {% endif %}</li>
         <li class="nav-item">
             {% if request.user.is_authenticated %}
@@ -49,3 +49,4 @@
         </form>
     </ul>
 </nav>
+

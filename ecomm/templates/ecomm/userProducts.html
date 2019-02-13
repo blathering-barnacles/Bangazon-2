@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <h1>Bangazon</h1>
+  </head>
+  <body>
+    {% include "ecomm/navbar.html" %}
+    <h2>Your Items For Sale</h2>
+
+    {% for item in selling %}
+      <ul>
+        <li><h4>{{item.title}}</h4>
+            <p>"{{item.description}}"</p>
+            Price: ${{item.price}}<br>
+            Quantity: {{item.quantity}}<br>
+            Date Added: {{item.dateAdded}}<br>
+            <form action="{% url 'ecomm:removeProduct' item.id %}">
+            <input type="submit" name="removeProduct" value="Cancel Sale">
+           </form>
+        </li>
+      </ul>
+    {% endfor %}
+  </body>
