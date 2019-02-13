@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from ..models import Order, ProductOrder, Customer, ProductType
+from ..models import Order, ProductOrder, Customer, ProductType, PaymentType
 
 @login_required
 def cart_items_list(request, user_id):
@@ -112,3 +112,36 @@ def deleteOrder(request, order_id):
         item.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(1,)))
+
+@login_required
+def completeOrder(request, order_id):
+    """R Lancaster[directs the user to the Add Payment Method template]
+
+    Arguments:
+        request, order_id (passed over from shoppingCart.html)
+
+    Returns:
+        render
+    """
+    currentUserId = request.user.id
+    payments = PaymentType.objects.raw('''
+        SELECT * from ecomm_paymentType
+        JOIN ecomm_customer
+        ON ecomm_customer.user_id  = ecomm_paymentType.customer_id
+        JOIN auth_user
+        ON  auth_user.id = ecomm_customer.user_id
+        WHERE auth_user.id =%s
+        AND ecomm_paymentType.deletedOn = ''
+    ''', [currentUserId])
+
+    context = {'order_id' : order_id, 'payments' : payments}
+    return render(request, 'ecomm/addPaymentMethod.html', context)
+
+def finishIt(request, order_id):
+    finish = Order.objects.raw('''SELECT * from ecomm_order where id=%s''', [order_id])[0]
+    finish.paymentType.id = request.POST('finishIt')
+    finish.save()
+    return HttpResponseRedirect(reverse('ecomm:thankYou'))
+
+def thankYou(request):
+    return render(request, 'ecomm/thankYou')

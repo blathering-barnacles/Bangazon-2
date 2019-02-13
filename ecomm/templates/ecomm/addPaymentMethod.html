@@ -1,0 +1,12 @@
+<h1>Add Payment Method to Order</h1>
+{% include "ecomm/navbar.html" %}
+
+Please select payment type for Order #{{order_id}}:<br><br>
+{% for payment in payments %}
+<form action="{% url 'ecomm:finishIt' order_id %}" method="POST">
+    {% csrf_token %}
+    <input type="radio" value={{payment.id}}>{{payment.name}} {{payment.cardNum}}</input><br><br>
+    {% endfor %}
+    <br>
+    <input type="submit" name="finishIt" value="Submit">
+</form>
