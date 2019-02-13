@@ -1,3 +1,14 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bangazon - Shopping Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  </head>
+  <body>
+
 <h1>{{ user.username }}'s Shopping Cart</h1>
 {% include "ecomm/navbar.html" with woop=context %}
 
@@ -42,4 +53,7 @@
 
 <!-- this endfor is for order in orders -->
 {% endfor %}
+
+</body>
+</html>
 

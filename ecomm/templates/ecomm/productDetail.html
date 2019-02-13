@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <title>Bangazon</title>
-  </head>
-  <body>
+    <title>Bangazon - Product Detail</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
     {% include "ecomm/navbar.html" %}
     <h1> {{ product.title }}</h1>
     <ul>
@@ -15,8 +19,9 @@
     {% if inventory == 0 %}
     <p> This product is out of stock and can't be added to the cart</p>
     {% elif inventory > 0 %}
-        <a href="{% url 'ecomm:productOrder' product_id=product.id %}">Add to Order</a>
+    <a href="{% url 'ecomm:productOrder' product_id=product.id %}">Add to Order</a>
     {% endif %}
 
-  </body>
+</body>
+
 </html>

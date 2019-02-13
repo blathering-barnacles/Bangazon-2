@@ -1,64 +1,50 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'ecomm/main.css' %}" />
 
-<nav>
-  <!-- home page -->
-  <form action="/" method='get'>
-    <input type="submit" value="Home">
-  </form>
-<!-- Sell button -->
-  {% if request.user.is_authenticated %}
-  <form action="/sell" method='get'>
-    <input type="submit" value="Sell A Product">
-  </form>
-  {% endif %}
-<!-- Account Settings Button -->
-  {% if request.user.is_authenticated %}
-  <form action="" method='get'>
-    <a href="{% url 'ecomm:userSettings' %}"><button type="button">Account Settings</button></a>
-  </form>
-  {% endif %}
-<!-- Logout button -->
-  {% if request.user.is_authenticated %}
-  <form action="/logout" method='get'>
-    <input type="submit" value="Logout">
-  </form>
-  {% else %}
-  <!-- Log in button -->
-  <form action="/login" method='get'>
-    <input type="submit" value="Login">
-  </form>
-  {% endif %}
-  <!-- Choose Category -->
-  {% for category in categories %}
-
-  <form action="{% url 'ecomm:chooseIt' 0 %}" method='post'>
-
-      {% endfor %}
-        {% csrf_token %}
-      <select name="categoryOption">
-          <!-- <option value="-------">-------</option> -->
-
-          <option value="all">All</option>
-
-          {% for category in categories %}
-          <option value="{{ category.id }}">{{ category.name }}</option>
-          {% endfor %}
-      </select>
-      <input type="submit" value="submit"/>
-    </form>
-  <!-- Search Bar -->
-  <form action="{% url 'ecomm:searchIt' %}" method='post'>
-        {% csrf_token %}
-      <input type="text" name="product"/>
-      <input type="submit" value="submit"/>
-    </form>
-
-    {% if request.user.is_authenticated %}
-    <a href="{% url 'ecomm:list_cart_items' user.id %}">Shopping Cart</a>
-    {% endif %}
-
-
-
-    </nav>
-
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="{% url 'ecomm:index' %}">Bangazon</a>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            {% if request.user.is_authenticated %}
+            <a class="nav-link" href="{% url 'ecomm:sell' %}">Sell a Product</a>
+            {% endif %}</li>
+        <li class="nav-item">
+            {% if request.user.is_authenticated %}
+            <a class="nav-link" href="{% url 'ecomm:index' %}">Your Items for Sale</a>
+            {% endif %}</li>
+        <li class="nav-item">
+            {% if request.user.is_authenticated %}
+            <a class="nav-link" href="{% url 'ecomm:userSettings' %}">Account Settings</a>
+            {% endif %}</li>
+        <li class="nav-item">
+            {% if request.user.is_authenticated %}
+            <a class="nav-link" href="{% url 'ecomm:list_cart_items' user.id %}">Shopping Cart</a>
+            {% endif %}
+        </li>
+        <li class="nav-item">
+            {% if request.user.is_authenticated %}
+            <a class="nav-link" href="{% url 'ecomm:logout' %}">Logout</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'ecomm:login' %}">Login</a>
+            {% endif %}
+        </li>
+        <!-- Search Bar -->
+        <form class="form-inline" action="{% url 'ecomm:searchIt' %}" method='post'>
+            {% csrf_token %}
+            <input type="text" name="product" placeholder="Search for a Product" class="form-control" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </form>
+        {% for category in categories %}
+        <form class="form-inline" action="{% url 'ecomm:chooseIt' 0 %}" method='post'>
+            {% endfor %}
+            {% csrf_token %}
+            <select name="categoryOption" class="form-control">
+                <option value="all">All</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="View Category" class="btn btn-primary"/>
+        </form>
+    </ul>
+</nav>

@@ -1,11 +1,30 @@
-<h1>Edit Payment Options</h1>
-{% include "ecomm/navbar.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
 
-{% csrf_token %}
-{%for payment in payments%}
-<p>Card Name:{{payment.name}} #{{payment.cardNum}} <form action="{% url 'ecomm:deletePayment' payment.id %}" method="POST" class="d-inline">
-        {% csrf_token %}
-        <input type="submit" value="X" /></form></p>
-{%endfor%}
-<br>
-<a href="{% url 'ecomm:addPaymentsForm' %}"><button>Add New Payment Option</button></a>
+<head>
+    <meta charset="utf-8">
+    <title>Bangazon</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <h1>Edit Payment Options</h1>
+    {% include "ecomm/navbar.html" %}
+
+    {% csrf_token %}
+    {%for payment in payments%}
+    <p>Card Name:{{payment.name}} #{{payment.cardNum}} <form action="{% url 'ecomm:deletePayment' payment.id %}"
+            method="POST" class="d-inline">
+            {% csrf_token %}
+            <input type="submit" value="X" /></form>
+    </p>
+    {%endfor%}
+    <br>
+    <a href="{% url 'ecomm:addPaymentsForm' %}"><button>Add New Payment Option</button></a>
+
+</body>
+
+</html>

@@ -1,12 +1,28 @@
-<h1>Edit Settings</h1>
-{% include "ecomm/navbar.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
 
-<form action="{% url 'ecomm:editSettings' %}" method="POST">
-{% csrf_token %}
-<label>Last Name: </label><input type="text" name="lastName" value="{{ user.last_name }}"/><br><br>
-<label>Phone: </label><input type="number" name="phone" value="{{ customer.phone }}" /><br><br>
-<label>Address: </label><input type="text" name="address" value="{{ customer.address }}" /><br><br>
-<!-- {{ form }} -->
+<head>
+    <meta charset="utf-8">
+    <title>Bangazon - Edit User Settings</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
 
-<input type="submit" value="Submit"/>
-</form>
+<body>
+
+    <h1>Edit Settings</h1>
+    {% include "ecomm/navbar.html" %}
+
+    <form action="{% url 'ecomm:editSettings' %}" method="POST">
+        {% csrf_token %}
+        <label>Last Name: </label><input type="text" name="lastName" value="{{ user.last_name }}" /><br><br>
+        <label>Phone: </label><input type="number" name="phone" value="{{ customer.phone }}" /><br><br>
+        <label>Address: </label><input type="text" name="address" value="{{ customer.address }}" /><br><br>
+        <!-- {{ form }} -->
+
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+
+</html>
