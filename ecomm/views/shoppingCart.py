@@ -148,7 +148,9 @@ def completeOrder(request, order_id):
         AND ecomm_paymentType.deletedOn = ''
     ''', [currentUserId])
 
-    context = {'order_id' : order_id, 'payments' : payments}
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
+
+    context = {'order_id' : order_id, 'payments' : payments, 'categories': categories}
     return render(request, 'ecomm/addPaymentMethod.html', context)
 
 def finishIt(request, order_id):
@@ -165,6 +167,8 @@ def finishIt(request, order_id):
     finish = Order.objects.raw('''SELECT * from ecomm_order where id=%s''', [order_id])[0]
     finish.paymentType_id = request.POST['finishIt']
     finish.save()
+
+
     return HttpResponseRedirect(reverse('ecomm:thankYou'))
 
 def thankYou(request):
@@ -176,5 +180,7 @@ def thankYou(request):
     Returns:
         Render the thankYou template.
     """
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
 
-    return render(request, 'ecomm/thankYou.html')
+    context = { 'categories': categories }
+    return render(request, 'ecomm/thankYou.html', context)

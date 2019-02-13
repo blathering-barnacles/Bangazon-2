@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.db import connection
 
-from ecomm.models import Product, ProductOrder
+from ecomm.models import Product, ProductOrder, ProductType
 
 
 def productDetail(request, product_id):
@@ -25,7 +25,7 @@ def productDetail(request, product_id):
 
     try:
         product_sql = 'SELECT * FROM ecomm_product WHERE ecomm_product.id=%s;'
-
+        categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
         product = Product.objects.raw(product_sql, [product_id])[0]
 
         purchased_sql = ''' SELECT ecomm_product.id, COUNT(*) as total
@@ -39,7 +39,7 @@ def productDetail(request, product_id):
         purchased_quantity = Product.objects.raw(purchased_sql, [product_id])[0]
 
         inventory = product.quantity - purchased_quantity.total
-        context = {"product": product, "inventory": inventory}
+        context = {"product": product, "inventory": inventory, 'categories': categories }
         return render(request, 'ecomm/productDetail.html', context)
 
     except IndexError:
