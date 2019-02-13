@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from ecomm.models import Product, Customer
+from ecomm.models import Product, Customer, PaymentType
 
 # class EditSettings(forms.Form):
 #   lastName = forms.CharField(label='lastName', max_length=20)
@@ -20,6 +20,8 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ('title', 'productType', 'description', 'price', 'quantity', 'location',)
 
-# class SearchForm(forms.ModelForm)
+class AddPayment(forms.ModelForm):
 
-#     class
+    class Meta:
+        model = PaymentType
+        fields = ('name', 'cardNum',)

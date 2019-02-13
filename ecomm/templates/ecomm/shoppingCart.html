@@ -1,21 +1,52 @@
 <h1>{{ user.username }}'s Shopping Cart</h1>
 {% include "ecomm/navbar.html" with woop=context %}
 
+{% if orders %}
+
 {% for order in orders %}
-{% if order.deletedOn is None %}
-{% for item in cart_list %}
+
+{% if order.paymentType_id is None and order.deletedOn is None %}
+<h5>Order #{{ order.id }}</h5>
+{% for items in cart_list %}
+{% for item in items %}
+{% if item.order_id == order.id %}
 <form action="{% url 'ecomm:deleteOrderItem' item.id %}" method="post">
     {% csrf_token %}
     {% if item.deletedOn is None %}
     <h5>{{ item.product.title|title }}, ${{ item.product.price }} <input type="submit" value="X" /></h5>
+    <!-- this ends the if that checks if the item.deletedOn is None -->
     {% endif %}
 </form>
+<!-- this ends the if that checks if the order_id from the item matches with the actual order.id -->
+{% endif %}
+
+<!-- this endfor is for item in items -->
 {% endfor %}
 
-{% for order in orders %}
+<!-- this endfor is for the items in cart_list -->
+{% endfor %}
+<form action="{% url 'ecomm:completeOrder' order.id %}">
+    <input type="submit" name="completeOrder" value="Complete this Order">
+</form>
+<!-- THIS IS A SEPARATE FOR LOOP THAT ITS JOB IS TO RENDER A CANCEL ORDER BUTTON PER ORDER -->
+
 <form action="{% url 'ecomm:deleteOrder' order.id %}">
-    {% endfor %}
+
     <input type="submit" name="deleteOrder" value="Cancel this Order">
 </form>
+
+
+
+<!-- this ends the if that checks if order.deletedOn is None -->
 {% endif %}
+
+
+
+
+<!-- this endfor is for order in orders -->
 {% endfor %}
+
+<!-- if orders is not True then display this -->
+{% else %}
+<h1>There are no items in your shopping cart</h1>
+{% endif %}

@@ -1,0 +1,11 @@
+<h1>Edit Payment Options</h1>
+{% include "ecomm/navbar.html" %}
+
+{% csrf_token %}
+{%for payment in payments%}
+<p>Card Name:{{payment.name}} #{{payment.cardNum}} <form action="{% url 'ecomm:deletePayment' payment.id %}" method="POST" class="d-inline">
+        {% csrf_token %}
+        <input type="submit" value="X" /></form></p>
+{%endfor%}
+<br>
+<a href="{% url 'ecomm:addPaymentsForm' %}"><button>Add New Payment Option</button></a>

@@ -7,7 +7,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from ..models import Order, ProductOrder, Customer, ProductType
+from ..models import Order, ProductOrder, Customer, ProductType, PaymentType
 
 @login_required
 def cart_items_list(request, user_id):
@@ -29,21 +29,23 @@ def cart_items_list(request, user_id):
     user = request.user.id
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     customer = Customer.objects.raw('''SELECT c.id FROM ecomm_customer c WHERE c.id = %s''', [user])[0]
-    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [user_id])
-    orderId = user_id
+    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s AND o.paymentType_id is null AND o.deletedOn is null''', [user_id])
 
-    cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
+    cartItemList = []
+    for order in orders:
+        orderId = order.id
+        cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
+        cartItemList.append(cartItems)
 
-    print("ITEMS: ", cartItems)
+    # print("ITEMS: ", cartItemList)
     # with connection.cursor() as cursor:
     #     cart_list = cursor.execute("SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s", (orderId, ))
     #     woop = cursor.fetchall()
         # cart_list.fetchall()
         # print("CART_LIST: ", cart_list)
 
-    context = { 'customers': customer, 'cart_list': cartItems, 'categories': categories, 'orders': order }
-    print("context: ", context)
-
+    context = { 'customers': customer, 'cart_list': cartItemList, 'categories': categories, 'orders': orders }
+    print("CONTEXT: ", context)
     return render(request, 'ecomm/shoppingCart.html' , context)
 
 def deleteOrderItem(request, item_id):
@@ -63,12 +65,28 @@ def deleteOrderItem(request, item_id):
 
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
-    print("DATE: ", formattedDate)
     userId = request.user.id
-    item = ProductOrder.objects.raw('''SELECT ecomm_productorder.* FROM ecomm_productorder WHERE ecomm_productorder.id = %s''', [item_id])[0]
-    print("ITEM: ", item)
-    item.deletedOn = formattedDate
-    item.save()
+    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s AND o.paymentType_id is null AND o.deletedOn is null''', [userId])
+    one_orderId = order[0].__dict__['id']
+    product = ProductOrder.objects.raw('''SELECT ecomm_productorder.* FROM ecomm_productorder WHERE ecomm_productorder.id = %s''', [item_id])[0]
+    items = ProductOrder.objects.raw(''' SELECT ecomm_productorder.* FROM ecomm_productorder JOIN ecomm_order ON ecomm_productorder.order_id = ecomm_order.id
+    AND ecomm_productorder.order_id = %s
+    AND ecomm_productorder.deletedOn is null''', [one_orderId])
+    itemList = []
+    for item in items:
+        itemList.append(item)
+    for item in itemList:
+
+        if len(itemList) <= 1:
+            print("ITS less or equal to 1")
+            order[0].deletedOn = formattedDate
+            item.deletedOn = formattedDate
+            item.save()
+            order[0].save()
+        else:
+            print("ITs MORE than 1")
+            product.deletedOn = formattedDate
+            product.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(userId,)))
 
@@ -87,19 +105,76 @@ def deleteOrder(request, order_id):
     Returns:
         After updating the deletedOn column in specific row it redirects to the shopping cart of that specific user.
     '''
+
     todaysDate = datetime.now()
     formattedDate = str(todaysDate)[0:10]
-    orderId = order_id
-    order = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [orderId])[0]
+    orderId = int(order_id)
     items = ProductOrder.objects.raw('''SELECT po.* FROM ecomm_productorder po WHERE po.order_id = %s''', [orderId])
+
+    userId = request.user.id
+    orders = Order.objects.raw('''SELECT o.id FROM ecomm_order o WHERE o.buyer_id = %s''', [userId])
+
+
+    for order in orders:
+        if  order.id == orderId:
+            order.deletedOn = formattedDate
+            order.save()
+
 
     for item in items:
         item.deletedOn = formattedDate
         item.save()
 
-    order.deletedOn = formattedDate
-    order.save()
-    print("WOOP")
-    print("ORDER ID: ", order_id)
+    return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(1,)))
 
-    return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(order_id,)))
+@login_required
+def completeOrder(request, order_id):
+    """R Lancaster[directs the user to the Add Payment Method template]
+
+    Arguments:
+        request, order_id (passed over from shoppingCart.html)
+
+    Returns:
+        render
+    """
+    currentUserId = request.user.id
+    payments = PaymentType.objects.raw('''
+        SELECT * from ecomm_paymentType
+        JOIN ecomm_customer
+        ON ecomm_customer.user_id  = ecomm_paymentType.customer_id
+        JOIN auth_user
+        ON  auth_user.id = ecomm_customer.user_id
+        WHERE auth_user.id =%s
+        AND ecomm_paymentType.deletedOn = ''
+    ''', [currentUserId])
+
+    context = {'order_id' : order_id, 'payments' : payments}
+    return render(request, 'ecomm/addPaymentMethod.html', context)
+
+def finishIt(request, order_id):
+    """R Lancaster[method takes the order being completed as well as the payment ID selected from the addPaymentMethod template and saves the payment method to the order within the order table.]
+
+    Arguments:
+        request
+        order_id
+
+    Returns:
+        Redirects the user to a plain thankYou template.
+    """
+
+    finish = Order.objects.raw('''SELECT * from ecomm_order where id=%s''', [order_id])[0]
+    finish.paymentType_id = request.POST['finishIt']
+    finish.save()
+    return HttpResponseRedirect(reverse('ecomm:thankYou'))
+
+def thankYou(request):
+    """R Lancaster[directs the user over to the thankYou template]
+
+    Arguments:
+        request
+
+    Returns:
+        Render the thankYou template.
+    """
+
+    return render(request, 'ecomm/thankYou.html')
