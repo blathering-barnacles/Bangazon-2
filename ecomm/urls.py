@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^register$', views.register, name='register'),
     url(r'^sell$', views.sell_product, name='sell'),
     url(r'^products$', views.list_products, name='list_products'),
+    path('removeProduct/<int:product_id>/', views.removeProduct, name='removeProduct'),
     path("userProducts", views.userProducts, name="userProducts"),
     path('userSettings', views.userSettings, name='userSettings'),
     path('products/<int:product_id>/', views.productDetail, name='productDetail'),
