@@ -153,9 +153,9 @@ def completeOrder(request, order_id):
 
 def finishIt(request, order_id):
     finish = Order.objects.raw('''SELECT * from ecomm_order where id=%s''', [order_id])[0]
-    finish.paymentType.id = request.POST('finishIt')
+    finish.paymentType_id = request.POST['finishIt']
     finish.save()
     return HttpResponseRedirect(reverse('ecomm:thankYou'))
 
 def thankYou(request):
-    return render(request, 'ecomm/thankYou')
+    return render(request, 'ecomm/thankYou.html')
