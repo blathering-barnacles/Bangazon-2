@@ -5,7 +5,6 @@ from .userSettings import userSettings
 from .productViews import sell_product, userProducts, removeProduct
 from .orderHistory import viewOrder, viewOrderDetail
 from .shoppingCart import cart_items_list, deleteOrderItem, deleteOrder, completeOrder, finishIt, thankYou
-from .sellProduct import sell_product
 from .editSettings import editSettings
 from .editSettings import editSettingsForm
 from .editSettings import editPaymentsForm
