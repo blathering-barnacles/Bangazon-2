@@ -45,6 +45,24 @@ def userSettings(request):
         WHERE auth_user.id =%s
         AND ecomm_productOrder.deletedOn is null
     ''', [currentUserId])
-    context = {'customer' : customer, 'payments' : payments, 'history' : history, 'categories': categories}
+
+    orders = Order.objects.raw(''' SELECT o.* from ecomm_order o WHERE o.buyer_id = %s AND o.paymentType_id is not null AND o.deletedOn is null ''',[currentUserId])
+
+    ordersList = []
+    for order in orders:
+        ordersList.append(order)
+
+    print("LIST: ", ordersList)
+    if len(ordersList) == 0:
+        print("woop")
+    else:
+        print("scoop")
+        ordersList == orders[0]
+        print(orders[0])
+
+    print("ORDER LIST: ", ordersList)
+
+    # print("ORDER IDDD: ", order[0].id)
+    context = {'customer' : customer, 'payments' : payments, 'history' : history, 'categories': categories, 'orders': ordersList}
     return render(request, 'ecomm/userSettings.html', context)
     # order = ProductOrder.objects.raw('SELECT * from ecomm_order')
