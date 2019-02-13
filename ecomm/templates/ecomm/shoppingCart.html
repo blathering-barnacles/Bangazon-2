@@ -12,9 +12,11 @@
 <h1>{{ user.username }}'s Shopping Cart</h1>
 {% include "ecomm/navbar.html" with woop=context %}
 
+{% if orders %}
 
 {% for order in orders %}
-{% if order.paymentType_id is None %}
+
+{% if order.paymentType_id is None and order.deletedOn is None %}
 <h5>Order #{{ order.id }}</h5>
 {% for items in cart_list %}
 {% for item in items %}
@@ -42,13 +44,12 @@
     <input type="submit" name="deleteOrder" value="Cancel this Order">
 </form>
 
-<!-- if order.deletedOn is not None then display this -->
-{% else %}
-<h1>There are items in your shopping cart!</h1>
 
 
 <!-- this ends the if that checks if order.deletedOn is None -->
 {% endif %}
+
+
 
 
 <!-- this endfor is for order in orders -->
@@ -57,3 +58,7 @@
 </body>
 </html>
 
+<!-- if orders is not True then display this -->
+{% else %}
+<h1>There are no items in your shopping cart</h1>
+{% endif %}

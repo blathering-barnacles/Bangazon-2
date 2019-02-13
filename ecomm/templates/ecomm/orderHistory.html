@@ -17,7 +17,7 @@
 {% if order.paymentType is not None %}
 <h4><a href="{% url 'ecomm:orderDetail' order.id %}">Order #{{ order.id }}</a></h4>
 {% for countedItem in countedItems %}
-<!-- <h5>Items: {{ countedItem.id }}</h5> -->
+<h5>Items: {{ countedItem.id }}</h5>
 {% endfor %}
 
 {% endif %}
