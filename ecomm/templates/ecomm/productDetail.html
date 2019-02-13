@@ -12,6 +12,11 @@
         <li>{{ product.description }}</li>
         <li>{{ inventory }} available</li>
     </ul>
-    <a href="#"><button type="button">Add to Order</button></a>
+    {% if inventory == 0 %}
+    <p> This product is out of stock and can't be added to the cart</p>
+    {% elif inventory > 0 %}
+        <a href="{% url 'ecomm:productOrder' product_id=product.id %}">Add to Order</a>
+    {% endif %}
+
   </body>
 </html>
