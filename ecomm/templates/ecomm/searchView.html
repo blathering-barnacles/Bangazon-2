@@ -3,5 +3,5 @@
 {% include "ecomm/navbar.html" %}
 
 {% for product in product_list %}
-<p><a href="{% url 'ecomm:productDetail' product.id %}">{{ product.title|title }},  Price: ${{ product.price }},  Qty: {{ product.quantity }}</a></p>
+<p><a href="{% url 'ecomm:productDetail' product.id %}">{{ product.title|title }},  Price: ${{ product.price }}</a></p>
 {% endfor %}

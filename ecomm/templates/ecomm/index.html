@@ -30,7 +30,7 @@
     {% for product in products %}
     <ul>
         <li>
-    <h5><a href="{% url 'ecomm:productDetail' product.id %}">{{ product.title|title }},  Price: ${{ product.price }},  Qty: {{ product.quantity }}, Date Added: {{ product.dateAdded }}</a></h5>
+    <h5><a href="{% url 'ecomm:productDetail' product.id %}">{{ product.title|title }},  Price: ${{ product.price }}, Date Added: {{ product.dateAdded }}</a></h5>
         </li>
     </ul>
     {% endfor %}

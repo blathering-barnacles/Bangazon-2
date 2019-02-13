@@ -9,5 +9,5 @@
 
 
 {% for product in products %}
-<p><a href="{% url 'ecomm:productDetail' product.id %}"">{{ product.title|title }}, Price: ${{ product.price }}, Qty: {{ product.quantity }}</a></p>
+<p><a href="{% url 'ecomm:productDetail' product.id %}"">{{ product.title|title }}, Price: ${{ product.price }}</a></p>
 {% endfor %}
