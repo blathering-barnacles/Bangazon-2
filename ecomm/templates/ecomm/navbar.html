@@ -12,6 +12,12 @@
     <input type="submit" value="Sell A Product">
   </form>
   {% endif %}
+  <!-- Items for sale by the user -->
+  {% if request.user.is_authenticated %}
+  <form action="/userProducts" method='get'>
+    <input type="submit" value="Your Items For Sale">
+  </form>
+  {% endif %}
 <!-- Account Settings Button -->
   {% if request.user.is_authenticated %}
   <form action="" method='get'>
