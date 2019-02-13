@@ -81,8 +81,6 @@ You now have a database named sqlite3.sql within your existing folder.  Use the 
 ![BANGAZON ERD](/Bangazon_ERD.png "Bangazon ERD")
 
 
-This will run all of the Unit Testing files created within the BangazonProject/Bangazon/bangazon_1/workforce/tests folder.
-
 
 
 ## Bangazon was created by the Blathering Barnacles - Cohort 28:
