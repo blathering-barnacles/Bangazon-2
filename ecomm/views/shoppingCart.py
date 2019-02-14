@@ -37,12 +37,14 @@ def cart_items_list(request, user_id):
         cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
         cartItemList.append(cartItems)
 
-    # print("ITEMS: ", cartItemList)
+
+# sometimes you have to put a try  and except which goes inside of the connection.cursor()
+    print("ITEMS: ", cartItemList)
     # with connection.cursor() as cursor:
     #     cart_list = cursor.execute("SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s", (orderId, ))
     #     woop = cursor.fetchall()
-        # cart_list.fetchall()
-        # print("CART_LIST: ", cart_list)
+    #     cart_list.fetchall()
+    #     print("CART_LIST: ", cart_list)
 
     context = { 'customers': customer, 'cart_list': cartItemList, 'categories': categories, 'orders': orders }
     print("CONTEXT: ", context)
@@ -78,15 +80,21 @@ def deleteOrderItem(request, item_id):
     for item in itemList:
 
         if len(itemList) <= 1:
+            itemId = item.id
             print("ITS less or equal to 1")
             order[0].deletedOn = formattedDate
-            item.deletedOn = formattedDate
-            item.save()
+            # item.deletedOn = formattedDate
+            # item.save()
+            with connection.cursor() as cursor:
+                cursor.execute('''UPDATE ecomm_productorder SET deletedOn = %s WHERE ecomm_productorder.id = %s ''', [formattedDate, itemId] )
             order[0].save()
         else:
+            productId = product.id
             print("ITs MORE than 1")
-            product.deletedOn = formattedDate
-            product.save()
+            with connection.cursor() as cursor:
+                cursor.execute('''UPDATE ecomm_productorder SET deletedOn = %s WHERE ecomm_productorder.id = %s ''', [formattedDate, productId] )
+            # product.deletedOn = formattedDate
+            # product.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(userId,)))
 
@@ -183,4 +191,5 @@ def thankYou(request):
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
 
     context = { 'categories': categories }
+
     return render(request, 'ecomm/thankYou.html', context)
