@@ -27,10 +27,11 @@ def sell_product(request):
       Rendered create product template for adding products to the market
   '''
   if request.method == 'GET':
+      categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
       # stores the sell form into a variable
       product_form = ProductForm()
       template_name = 'ecomm/createProduct.html'
-      return render(request, template_name, {'product_form': product_form})
+      return render(request, template_name, {'product_form': product_form, "categories": categories})
 
   if request.method == 'POST':
       # stores user form entries into variables

@@ -1,21 +1,24 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <h1>Bangazon</h1>
+    <title>Bangazon-Sell a Product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   </head>
   <body>
+        {% include "ecomm/navbar.html" %}
+      <div class="container">
+    <h1 class="mt-3">Sell Product</h1>
 
-    {% include "ecomm/navbar.html" %}
-    
-    <h1>Sell Product</h1>
-
-    <form action="{% url 'ecomm:sell' %}" method="POST">
+    <form action="{% url 'ecomm:sell' %}" method="POST" class="d-flex flex-column w-50">
       {% csrf_token %}
-      {{ product_form.as_p }}
-      <input type="submit" value="Sell It" />
+      {{ product_form }}
+      <input type="submit" value="Sell It" class="btn btn-primary mt-2 w-25" />
     </form>
+</div>
   </body>
 </html>
 

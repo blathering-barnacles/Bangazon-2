@@ -1,8 +1,26 @@
-<h1>Add New Payment</h1>
-{% include "ecomm/navbar.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
 
-<form action="{% url 'ecomm:addPayment' %}" method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Add" />
-</form>
+<head>
+    <meta charset="utf-8">
+    <title>Bangazon - Add Payment</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    {% include "ecomm/navbar.html" %}
+    <div class="container">
+        <h1 class="mt-3">Add New Payment</h1>
+
+
+        <form action="{% url 'ecomm:addPayment' %}" method="POST" class="mt-3">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Add" class="btn btn-primary" />
+        </form>
+    </div>
+</body>
+
+</html>
