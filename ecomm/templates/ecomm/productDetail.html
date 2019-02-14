@@ -14,7 +14,7 @@
         {% include "ecomm/navbar.html" %}
 
     <div class="container">
-    <h1> {{ product.title }}</h1>
+    <h1 class="mt-3"> {{ product.title|title }}</h1>
     <ul>
         <li>${{ product.price }}</li>
         <li>{{ product.description }}</li>
@@ -23,7 +23,7 @@
     {% if inventory == 0 %}
     <p> This product is out of stock and can't be added to the cart</p>
     {% elif inventory > 0 %}
-    <a href="{% url 'ecomm:productOrder' product_id=product.id %}">Add to Order</a>
+    <a href="{% url 'ecomm:productOrder' product_id=product.id %}" class="btn btn-primary">Add to Order</a>
     {% endif %}
 </div>
 </body>

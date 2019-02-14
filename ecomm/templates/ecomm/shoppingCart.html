@@ -6,27 +6,34 @@
     <title>Bangazon - Shopping Cart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   </head>
   <body>
 
-<h1>{{ user.username }}'s Shopping Cart</h1>
-{% include "ecomm/navbar.html" with woop=context %}
+      {% include "ecomm/navbar.html" with woop=context %}
+      <div class="container">
+
+
+      <h1 class="mt-3">{{ user.username }}'s Shopping Cart</h1>
 
 {% if orders %}
 
 {% for order in orders %}
 
 {% if order.paymentType_id is None and order.deletedOn is None %}
-<h5>Order #{{ order.id }}</h5>
+<h3 class="mt-3">Order #{{ order.id }}</h3>
 {% for items in cart_list %}
 {% for item in items %}
 {% if item.order_id == order.id %}
 <form action="{% url 'ecomm:deleteOrderItem' item.id %}" method="post">
     {% csrf_token %}
+    <ul>
     {% if item.deletedOn is None %}
-    <h5>{{ item.product.title|title }}, ${{ item.product.price }} <input type="submit" value="X" /></h5>
+    <li>{{ item.product.title|title }}, ${{ item.product.price }} <input type="submit" value="X" class="btn btn-danger btn-sm"/></li>
     <!-- this ends the if that checks if the item.deletedOn is None -->
     {% endif %}
+</ul>
 </form>
 <!-- this ends the if that checks if the order_id from the item matches with the actual order.id -->
 {% endif %}
@@ -36,16 +43,16 @@
 
 <!-- this endfor is for the items in cart_list -->
 {% endfor %}
-<form action="{% url 'ecomm:completeOrder' order.id %}">
-    <input type="submit" name="completeOrder" value="Complete this Order">
+<div class="d-flex">
+<form action="{% url 'ecomm:completeOrder' order.id %}" class="d-inline mr-2">
+    <input type="submit" name="completeOrder" value="Complete this Order" class="btn btn-primary">
 </form>
 <!-- THIS IS A SEPARATE FOR LOOP THAT ITS JOB IS TO RENDER A CANCEL ORDER BUTTON PER ORDER -->
 
 <form action="{% url 'ecomm:deleteOrder' order.id %}">
-
-    <input type="submit" name="deleteOrder" value="Cancel this Order">
+    <input type="submit" name="deleteOrder" value="Cancel this Order" class="btn btn-outline-danger">
 </form>
-
+</div>
 
 
 <!-- this ends the if that checks if order.deletedOn is None -->
@@ -57,10 +64,11 @@
 <!-- this endfor is for order in orders -->
 {% endfor %}
 
-</body>
-</html>
 
 <!-- if orders is not True then display this -->
 {% else %}
-<h1>There are no items in your shopping cart</h1>
+<h5 class="text-center mt-5">There are no items in your shopping cart</h5>
 {% endif %}
+</div>
+</body>
+</html>

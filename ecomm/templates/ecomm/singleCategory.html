@@ -1,23 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>Bangazon - Product Category</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
-  </head>
-  <body>
-{% for category in currentCategory %}
-{% for ids in countedIds %}
-<h1>{{ category.name }}, Total Products: {{ ids.id }}</h1>
-{% endfor %}
-{% endfor %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
 
-<!-- I DONT KNOW WHAT WOOP DOES, I JUST KNOW IT HAS TO BE THERE SO IT CAN PASS THE CONTEXT FROM INDEX INTO NAV -->
-{% include "ecomm/navbar.html" with woop=context %}
-
-
-{% for product in products %}
-<p><a href="{% url 'ecomm:productDetail' product.id %}"">{{ product.title|title }}, Price: ${{ product.price }}</a></p>
-{% endfor %}
+<body>
+    <!-- I DONT KNOW WHAT WOOP DOES, I JUST KNOW IT HAS TO BE THERE SO IT CAN PASS THE CONTEXT FROM INDEX INTO NAV -->
+    {% include "ecomm/navbar.html" with woop=context %}
+    <div class="container">
+    {% for category in currentCategory %}
+    {% for ids in countedIds %}
+    <h1 class="mt-3">{{ category.name }}</h1><h5><span class="badge badge-primary">Total Products: {{ ids.id }}</span></h5>
+    {% endfor %}
+    {% endfor %}
+<ul class="list-group mt-3" style="width: 25rem;">
+    {% for product in products %}
+    <li class="list-group-item"><a href="{% url 'ecomm:productDetail' product.id %}">{{ product.title|title }} ${{ product.price }}</a>
+    </li>
+    {% endfor %}
+</ul>
+</div>
+</body>
+</html>

@@ -8,29 +8,30 @@
     <title>Bangazon - Product Categories</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 <body>
-    <h1>All Categories</h1>
     {% include "ecomm/navbar.html" with woop=context %}
+        <div class="container">
 
-
+    <h1 class="mt-3">All Categories</h1>
 <!-- this is a fking mess but it works..   -->
     {% for category in categories %}
         {% for list in countedIds %}
         {% for productType in list %}
         {% if category.name == productType.name %}
 
-    <h1><a href="{% url 'ecomm:chooseIt' category.id %}">{{ category.name }}, amount of products: {{ productType.id }}</a></h1>
+    <h3><a href="{% url 'ecomm:chooseIt' category.id %}">{{ category.name }}: {{ productType.id }} products</a></h3>
         {% endif %}
         <!-- this endfor is for productType -->
         {% endfor %}
         <!-- this endfor is for list -->
         {% endfor %}
-
+<ul>
     {% for itemList in items %}
     {% for item in itemList %}
     {% if category.id == item.productType_id %}
-    <h5>{{ item.title|title }}</h5>
+    <li>{{ item.title|title }}</li>
     <!-- {% include "ecomm/categoryBlock.html"  %} -->
     {% endif %}
     <!-- this endfor is for the item -->
@@ -38,8 +39,9 @@
     <!-- this endfor is for the itemlist -->
     {% endfor %}
     <!-- this endfor is for the  category -->
+</ul>
     {% endfor %}
-
+</div>
 </body>
 </html>
 
