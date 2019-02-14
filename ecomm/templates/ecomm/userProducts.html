@@ -18,7 +18,7 @@
             {% for item in selling %}
             <div class="card text-center mr-2" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">{{item.title}}</h5>
+                    <h5 class="card-title">{{item.title|title}}</h5>
                     <p class="card-text">{{item.description}}</p>
                     <form action="{% url 'ecomm:removeProduct' item.id %}">
                         <input type="submit" name="removeProduct" value="Cancel Sale" class="btn btn-primary btn-sm">

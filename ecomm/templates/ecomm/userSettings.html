@@ -37,21 +37,29 @@
             <li class="list-group-item">
                 <i class="fas fa-history fa-fw"></i><span class="font-weight-bold"> Order History</span>
                 <ul>
-                    {%for item in history%}
+                    {% if history and orders %}
+                    {% for order in orders %}
                     <li>
-                    {% if item.paymentType_id is not None %}
-                    <p><span class="font-weight-bold">Order #{{item.order_id}}</span><br>Item: {{item.product.title}}<br>Description:
-                        {{item.product.description}}</p>
+                        <p>Order #{{order.id}}</p>
+
+                        <!-- {%for item in history%}
+                        {% if item.order_id == order.id %}
+                        <p>Order #{{item.order_id}}</p>
+                        <p>Item: {{item.product.title}}<br>Description: {{item.product.description}}</p>
+
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %} -->
                     </li>
+
                     {% else %}
-                    <li>You have not purchased any items yet.</li>
+                    <p>You have not purchased any items yet.</p>
                     {% endif %}
-                    {%endfor%}
                 </ul>
-                <a href="{% url 'ecomm:orderHistory' user.id %}"><button class="btn btn-primary btn-sm">More Order History Info</button></a>
-            </li>
+                <a href="{% url 'ecomm:orderHistory' user.id %}" class="btn btn-primary btn-sm">Order History Details</a>
         </ul>
-        <a href="{% url 'ecomm:editSettingsForm' %}"><button class="btn btn-primary mt-3"><i class="fas fa-user-edit"></i> Edit User Settings</button></a>
+        <a href="{% url 'ecomm:editSettingsForm' %}"><button class="btn btn-primary mt-3"><i
+                    class="fas fa-user-edit"></i> Edit User Settings</button></a>
     </div>
 </body>
 
