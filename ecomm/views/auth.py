@@ -114,7 +114,8 @@ def user_logout(request):
 
 
 def list_products(request):
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     all_products = Product.objects.all()
     template_name = 'ecomm/listProduct.html'
-    return render(request, template_name, {'products': all_products})
+    return render(request, template_name, {'products': all_products, 'categories': categories})
 

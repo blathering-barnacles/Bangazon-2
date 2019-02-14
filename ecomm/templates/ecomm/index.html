@@ -1,38 +1,44 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>Bangazon</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
 
-  </head>
-  <body>
-    <h1>Bangazon</h1>
+<body>
     {% include "ecomm/navbar.html" with woop=context %}
-    {% if user.is_authenticated %}
+    <div class="jumbotron jumbotron-fluid bg-light">
+        <div class="container">
+            {% if user.is_authenticated %}
+            <h1>Welcome To Bangazon, {{ user.first_name }}!</h1>
+            {% else %}
+            <h1>Welcome to Bangazon!</h1>
+            {% endif %}
+            <p class="lead">Get started selling or buying today</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-flex mt-4 flex-wrap justify-content-around">
+            {% for product in products %}
+            <div class="card text-center mb-3" style="width: 18rem;">
+                <div class="card-body">
+                    <h3 class="card-title">{{ product.title|title }}</h3>
+                    <h5>${{ product.price }}</h5>
+                    <a href="{% url 'ecomm:productDetail' product.id %}" class="btn btn-primary btn-m">Details</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Added on {{ product.dateAdded }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
 
-      <h2>Welcome To Bangazon {{ user.username }}!</h2>
-      <a href="{% url 'ecomm:logout' %}">Logout</a>
-      {% else %}
-      <h2>Welcome to Bangazon</h2>
-
-
-      <div>
-        <a href="{% url 'ecomm:login' %}">Login</a>
-      </div>
-
-      <div>
-        <a href="{% url 'ecomm:register' %}">Register</a>
-      </div>
-    </ul>
-    {% endif %}
-    <h3>Latest 20 Items:</h3>
-    {% for product in products %}
-    <ul>
-        <li>
-    <h5><a href="{% url 'ecomm:productDetail' product.id %}">{{ product.title|title }},  Price: ${{ product.price }}, Date Added: {{ product.dateAdded }}</a></h5>
-        </li>
-    </ul>
-    {% endfor %}
-  </body>
 </html>

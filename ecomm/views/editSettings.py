@@ -103,9 +103,9 @@ def addPaymentsForm(request):
     Returns:
         render
     """
-
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     form = AddPayment()
-    return render(request, 'ecomm/addPayment.html', {"form" : form})
+    return render(request, 'ecomm/addPayment.html', {"form" : form, "categories": categories})
 
 def addPayment(request):
     """R Lancaster[method takes values entered on Add Payment form and inserts a row into the PaymentType table]
