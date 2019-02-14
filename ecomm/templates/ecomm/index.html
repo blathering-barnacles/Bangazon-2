@@ -16,7 +16,7 @@
     <div class="jumbotron jumbotron-fluid bg-light">
         <div class="container">
             {% if user.is_authenticated %}
-            <h1>Welcome To Bangazon, {{ user.username }}!</h1>
+            <h1>Welcome To Bangazon, {{ user.first_name }}!</h1>
             {% else %}
             <h1>Welcome to Bangazon!</h1>
             {% endif %}

@@ -40,23 +40,16 @@
                     {% if history and orders %}
                     {% for order in orders %}
                     <li>
-                        <p>Order #{{order.id}}</p>
-
-                        <!-- {%for item in history%}
-                        {% if item.order_id == order.id %}
-                        <p>Order #{{item.order_id}}</p>
-                        <p>Item: {{item.product.title}}<br>Description: {{item.product.description}}</p>
-
-                        {% endif %}
-                        {% endfor %}
-                        {% endfor %} -->
+                        Order #{{order.id}}
                     </li>
+                    {% endfor %}
 
                     {% else %}
                     <p>You have not purchased any items yet.</p>
                     {% endif %}
                 </ul>
-                <a href="{% url 'ecomm:orderHistory' user.id %}" class="btn btn-primary btn-sm">Order History Details</a>
+                <a href="{% url 'ecomm:orderHistory' user.id %}" class="btn btn-primary btn-sm mt-2">Order History
+                    Details</a>
         </ul>
         <a href="{% url 'ecomm:editSettingsForm' %}"><button class="btn btn-primary mt-3"><i
                     class="fas fa-user-edit"></i> Edit User Settings</button></a>

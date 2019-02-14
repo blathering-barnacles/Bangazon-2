@@ -4,27 +4,30 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Bangazon</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 
 <body>
 
-    <h1>Edit Payment Options</h1>
     {% include "ecomm/navbar.html" %}
+    <div class="container">
+    <h1 class="mt-3">Edit Payment Options</h1>
 
+<ul class="list-group mt-4">
     {% csrf_token %}
     {%for payment in payments%}
-    <p>Card Name:{{payment.name}} #{{payment.cardNum}} <form action="{% url 'ecomm:deletePayment' payment.id %}"
+    <li class="list-group-item"><span class="font-weight-bold">Card Name:</span> {{payment.name}} #{{payment.cardNum}} <form action="{% url 'ecomm:deletePayment' payment.id %}"
             method="POST" class="d-inline">
             {% csrf_token %}
-            <input type="submit" value="X" /></form>
-    </p>
+            <input type="submit" value="X" class="btn btn-danger btn-sm"/></form>
+    </li>
     {%endfor%}
-    <br>
-    <a href="{% url 'ecomm:addPaymentsForm' %}"><button>Add New Payment Option</button></a>
-
+</ul>
+    <a href="{% url 'ecomm:addPaymentsForm' %}" class="btn btn-primary mt-3">Add New Payment Option</a>
+</div>
 </body>
 
 </html>

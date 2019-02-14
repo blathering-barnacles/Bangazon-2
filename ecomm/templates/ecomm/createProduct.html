@@ -11,15 +11,12 @@
   <body>
         {% include "ecomm/navbar.html" %}
       <div class="container">
+    <h1 class="mt-3">Sell Product</h1>
 
-
-
-    <h1>Sell Product</h1>
-
-    <form action="{% url 'ecomm:sell' %}" method="POST">
+    <form action="{% url 'ecomm:sell' %}" method="POST" class="d-flex flex-column w-50">
       {% csrf_token %}
       {{ product_form }}
-      <input type="submit" value="Sell It" />
+      <input type="submit" value="Sell It" class="btn btn-primary mt-2 w-25" />
     </form>
 </div>
   </body>

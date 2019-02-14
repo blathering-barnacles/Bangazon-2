@@ -18,7 +18,7 @@
         <ul class="list-group mt-4" style="width: 18rem;">
             {% for order in orders %}
             {% if order.paymentType is not None %}
-            <li class="list-group-item d-flex justify-content-between">Order #{{ order.id }} <a href="{% url 'ecomm:orderDetail' order.id %}"
+            <li class="list-group-item d-flex justify-content-between align-items-center">Order #{{ order.id }} <a href="{% url 'ecomm:orderDetail' order.id %}"
                     class="btn btn-primary btn-sm">Details</a>
                 <!-- {% for countedItem in countedItems %}
         <h5>Items: {{ countedItem.id }}</h5>
