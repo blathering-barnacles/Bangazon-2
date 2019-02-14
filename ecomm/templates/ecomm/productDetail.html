@@ -6,10 +6,14 @@
     <title>Bangazon - Product Detail</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 
 <body>
-    {% include "ecomm/navbar.html" %}
+        {% include "ecomm/navbar.html" %}
+
+    <div class="container">
     <h1> {{ product.title }}</h1>
     <ul>
         <li>${{ product.price }}</li>
@@ -21,7 +25,7 @@
     {% elif inventory > 0 %}
     <a href="{% url 'ecomm:productOrder' product_id=product.id %}">Add to Order</a>
     {% endif %}
-
+</div>
 </body>
 
 </html>
