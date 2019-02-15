@@ -15,15 +15,16 @@ from ..models import Order, ProductOrder, Customer, ProductType
 def viewOrder(request, user_id):
 
     userId = user_id
-    print("USER ID: ", userId)
+    # print("USER ID: ", userId)
 
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
     orders = Order.objects.raw('''SELECT o.* FROM ecomm_order o WHERE o.buyer_id = %s''', [userId])
     orderItemList = []
+    countedItems = ""
 
 
     for order in orders:
-        print("ORDER: ", order)
+        # print("ORDER: ", order)
         orderId = order.id
         orderItems = ProductOrder.objects.raw('''SELECT po.*
         FROM ecomm_productorder po, ecomm_order eo
@@ -38,9 +39,9 @@ def viewOrder(request, user_id):
             AND eo.id = %s
             AND po.deletedOn is null''', [orderId])
 
-    print("COUNTED ITEMS: ", countedItems)
+    # print("COUNTED ITEMS: ", countedItems)
 
-    print("ORDER ITEM LIST: ", orderItemList)
+    # print("ORDER ITEM LIST: ", orderItemList)
 
     context = { 'orders': orders, 'orderItemList': orderItemList, 'countedItems': countedItems, 'categories': categories }
 

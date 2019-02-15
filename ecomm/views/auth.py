@@ -20,7 +20,7 @@ def index(request):
     cat = (categories)
     user = request.user.id
     template_name = 'ecomm/index.html'
-    products = Product.objects.raw('''SELECT p.* FROM ecomm_product p ORDER BY p.dateAdded DESC LIMIT 20''')
+    products = Product.objects.raw('''SELECT p.* FROM ecomm_product p WHERE p.deletedOn is null ORDER BY p.dateAdded DESC LIMIT 20''')
     context = { "categories": cat, 'products': products }
 
     return render(request, template_name , context)
