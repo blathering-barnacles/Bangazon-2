@@ -12,9 +12,9 @@
 </head>
 
 <body>
+    {% include "ecomm/navbar.html" %}
     <div class="container">
     <h1 class="mt-3">Register with Bangazon</h1>
-
     {% if registered %}
     <strong>Thank you for registering!</strong>
     <a href="{% url 'ecomm:index' %}">Return to the homepage.</a><br />

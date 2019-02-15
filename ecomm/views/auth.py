@@ -20,7 +20,7 @@ def index(request):
     cat = (categories)
     user = request.user.id
     template_name = 'ecomm/index.html'
-    products = Product.objects.raw('''SELECT p.* FROM ecomm_product p ORDER BY p.dateAdded DESC LIMIT 20''')
+    products = Product.objects.raw('''SELECT p.* FROM ecomm_product p WHERE p.deletedOn is null ORDER BY p.dateAdded DESC LIMIT 20''')
     context = { "categories": cat, 'products': products }
 
     return render(request, template_name , context)
@@ -32,6 +32,7 @@ def register(request):
     Method arguments:
       request -- The full HTTP request object
     '''
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
 
     # A boolean value for telling the template whether the registration was successful.
     # Set to False initially. Code changes value to True when registration succeeds.
@@ -64,7 +65,7 @@ def register(request):
     elif request.method == 'GET':
         user_form = UserForm()
         template_name = 'ecomm/register.html'
-        return render(request, template_name, {'user_form': user_form})
+        return render(request, template_name, {'user_form': user_form, 'categories': categories})
 
 
 def login_user(request):
@@ -73,9 +74,10 @@ def login_user(request):
     Method arguments:
       request -- The full HTTP request object
     '''
+    categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
 
     # Obtain the context for the user's request.
-    context = RequestContext(request)
+    context = { 'request': RequestContext(request), 'categories': categories }
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
@@ -98,7 +100,7 @@ def login_user(request):
             return HttpResponse("Invalid login details supplied.")
 
 
-    return render(request, 'ecomm/login.html', {}, context)
+    return render(request, 'ecomm/login.html', context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required

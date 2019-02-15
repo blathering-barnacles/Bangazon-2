@@ -26,7 +26,7 @@ def search(request):
     print("typed: ", productName)
     productFormatted = str("%"+productName+"%")
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
-    product_list = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.title LIKE %s''', [productFormatted])
+    product_list = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.title LIKE %s AND ep.deletedOn is null''', [productFormatted])
     print("products: ", product_list)
     context = {'product_list': product_list, 'categories': categories}
     print("context: ", context.values())
@@ -41,7 +41,7 @@ def choose(request, category_id):
     a template with single category.
 
     Also, once inside if they selected "all" then if they click on a category, they will be able to see all of the products
-    of that category.
+    of that category within the last 10 days and that have not been deleted yet.
 
     Author:
     Alfonso Miranda
@@ -55,7 +55,7 @@ def choose(request, category_id):
 
     '''
 
-    extraDays = timedelta(days=5)
+    extraDays = timedelta(days=10)
     todaysDate = datetime.now()
     print("TODAY: ", todaysDate)
     formattedDate = str(todaysDate-extraDays)[0:10]
@@ -88,6 +88,7 @@ def choose(request, category_id):
                 countedIds = Product.objects.raw('''SELECT count(p.id) as id, ept.* FROM ecomm_product p
                     JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
                     AND ept.id = %s
+                    AND p.deletedOn is null
                     ORDER by ept.name''', [categoryId])
                 categoryIdList.append(countedIds)
 
@@ -95,6 +96,7 @@ def choose(request, category_id):
                 JOIN ecomm_producttype ept WHERE p.productType_id = ept.id
                 AND p.dateAdded >= %s
                 AND ept.id = %s
+                AND p.deletedOn is null
                 ORDER BY p.dateAdded DESC
                 LIMIT 3''', [formattedDate, categoryId])
                 itemList.append(allItems)
@@ -107,8 +109,8 @@ def choose(request, category_id):
         else:
             print("woop")
             categoryId = request.POST['categoryOption']
-            products = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
-            countedIds = Product.objects.raw('''SELECT count(ep.id) as id FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
+            products = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.productType_id = %s AND ep.deletedOn is null''', [categoryId])
+            countedIds = Product.objects.raw('''SELECT count(ep.id) as id FROM ecomm_product ep WHERE ep.productType_id = %s AND ep.deletedOn is null''', [categoryId])
             singleCategory = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat WHERE cat.id = %s''', [categoryId])
             categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
             context = {'products': products, 'currentCategory': singleCategory, 'categories': categories, 'countedIds': countedIds }
@@ -119,8 +121,8 @@ def choose(request, category_id):
 
         categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
         categoryId = category_id
-        products = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
-        countedIds = Product.objects.raw('''SELECT count(ep.id) as id FROM ecomm_product ep WHERE ep.productType_id = %s''', [categoryId])
+        products = Product.objects.raw('''SELECT ep.* FROM ecomm_product ep WHERE ep.productType_id = %s AND ep.deletedOn is null''', [categoryId])
+        countedIds = Product.objects.raw('''SELECT count(ep.id) as id FROM ecomm_product ep WHERE ep.productType_id = %s AND ep.deletedOn is null''', [categoryId])
         singleCategory = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat WHERE cat.id = %s''', [categoryId])
         context = {'products': products, 'currentCategory': singleCategory, 'categories': categories, 'countedIds': countedIds }
         return render(request, 'ecomm/singleCategory.html', context)

@@ -37,12 +37,14 @@ def cart_items_list(request, user_id):
         cartItems = ProductOrder.objects.raw('''SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s''', (orderId, ))
         cartItemList.append(cartItems)
 
+
+# sometimes you have to put a try  and except which goes inside of the connection.cursor()
     # print("ITEMS: ", cartItemList)
     # with connection.cursor() as cursor:
     #     cart_list = cursor.execute("SELECT epo.* FROM ecomm_productorder as epo WHERE epo.order_id = %s", (orderId, ))
     #     woop = cursor.fetchall()
-        # cart_list.fetchall()
-        # print("CART_LIST: ", cart_list)
+    #     cart_list.fetchall()
+    #     print("CART_LIST: ", cart_list)
 
     context = { 'customers': customer, 'cart_list': cartItemList, 'categories': categories, 'orders': orders }
     print("CONTEXT: ", context)
@@ -78,15 +80,27 @@ def deleteOrderItem(request, item_id):
     for item in itemList:
 
         if len(itemList) <= 1:
-            print("ITS less or equal to 1")
-            order[0].deletedOn = formattedDate
-            item.deletedOn = formattedDate
-            item.save()
-            order[0].save()
+            # WITH RAW
+            itemId = item.id
+            orderId = order[0].id
+            with connection.cursor() as cursor:
+                cursor.execute('''UPDATE ecomm_productorder SET deletedOn = %s WHERE ecomm_productorder.id = %s ''', [formattedDate, itemId] )
+                cursor.execute('''UPDATE ecomm_order SET deletedOn = %s WHERE ecomm_order.id = %s''', [formattedDate, orderId])
+            # WITHOUT RAW
+            # order[0].deletedOn = formattedDate
+            # order[0].save()
+            # item.deletedOn = formattedDate
+            # item.save()
+
         else:
+            # WITH RAW
+            productId = product.id
             print("ITs MORE than 1")
-            product.deletedOn = formattedDate
-            product.save()
+            with connection.cursor() as cursor:
+                 cursor.execute('''UPDATE ecomm_productorder SET deletedOn = %s WHERE ecomm_productorder.id = %s ''', [formattedDate, productId] )
+            # WITHOUT RAW
+            # product.deletedOn = formattedDate
+            # product.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(userId,)))
 
@@ -116,14 +130,23 @@ def deleteOrder(request, order_id):
 
 
     for order in orders:
-        if  order.id == orderId:
-            order.deletedOn = formattedDate
-            order.save()
+        if order.id == orderId:
+            # WITH RAW
+            with connection.cursor() as cursor:
+                cursor.execute('''UPDATE ecomm_order SET deletedOn = %s WHERE ecomm_order.id = %s ''', [formattedDate, orderId] )
+            # WITHOUT RAW
+            # order.deletedOn = formattedDate
+            # order.save()
 
 
     for item in items:
-        item.deletedOn = formattedDate
-        item.save()
+        # WITH RAW
+        itemId = item.id
+        with connection.cursor() as cursor:
+            cursor.execute('''UPDATE ecomm_productorder SET deletedOn = %s WHERE ecomm_productorder.id = %s ''', [formattedDate, itemId] )
+        # WITHOUT RAW
+        # item.deletedOn = formattedDate
+        # item.save()
 
     return HttpResponseRedirect(reverse('ecomm:list_cart_items', args=(1,)))
 
@@ -183,4 +206,5 @@ def thankYou(request):
     categories = ProductType.objects.raw('''SELECT cat.id, cat.name FROM ecomm_producttype cat''')
 
     context = { 'categories': categories }
+
     return render(request, 'ecomm/thankYou.html', context)
